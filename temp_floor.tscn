@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://urmmnabgixtj"]
+
+[ext_resource type="Script" uid="uid://dkve2f8xsu8ip" path="res://temp_floor.gd" id="1_hebk6"]
+[ext_resource type="Texture2D" uid="uid://c6xr5gh34qn7s" path="res://art/Untitled.png" id="1_s875d"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hebk6"]
+size = Vector2(484, 50)
+
+[node name="tempFloor" type="StaticBody2D"]
+script = ExtResource("1_hebk6")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(191, 0)
+scale = Vector2(4.82, 1)
+texture = ExtResource("1_s875d")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(192, 25)
+shape = SubResource("RectangleShape2D_hebk6")

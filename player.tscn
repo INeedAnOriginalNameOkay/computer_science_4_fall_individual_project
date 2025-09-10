@@ -1,0 +1,46 @@
+[gd_scene load_steps=6 format=3 uid="uid://ybl0qgtjjtv7"]
+
+[ext_resource type="Texture2D" uid="uid://bcr5ag1evhyee" path="res://art/TempPlayer.png" id="1_4flbx"]
+[ext_resource type="Script" uid="uid://defibf8h8r2" path="res://player.gd" id="1_onrkg"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_onrkg"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_4flbx")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i3pqv"]
+size = Vector2(20, 84)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_onrkg"]
+size = Vector2(45, 58)
+
+[node name="player" type="CharacterBody2D"]
+floor_constant_speed = true
+script = ExtResource("1_onrkg")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(20, -24)
+scale = Vector2(0.14537, 0.14537)
+sprite_frames = SubResource("SpriteFrames_onrkg")
+
+[node name="Collision&Hurtbox" type="CollisionShape2D" parent="."]
+position = Vector2(0, -42)
+shape = SubResource("RectangleShape2D_i3pqv")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(0, -42)
+scale = Vector2(1, 4.2)
+
+[node name="Attack" type="Area2D" parent="."]
+
+[node name="Hitbox" type="CollisionShape2D" parent="Attack"]
+position = Vector2(32.5, -43)
+shape = SubResource("RectangleShape2D_onrkg")
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
