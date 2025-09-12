@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 @export var speed = 300.0
 @export var jump_speed = -600.0
-@export var weight = 1.5
+@export var weight = 1.0
 @export var grip = .05
 @export var canWallCling = true
 var isWallCling
@@ -13,6 +13,7 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var netspeed = 0
 var jumpCount = 1
 var dash = 0
+var freefall = true
 func _physics_process(delta):
 	
 	if dash > 0:
@@ -27,11 +28,17 @@ func _physics_process(delta):
 		jumpCount = 1
 	
 	if Input.is_action_just_pressed("jump") && jumpCount > 0:
+		freefall = false
 		if not(is_on_floor()):
 			jumpCount -= 1
-		if isWallCling == "false":
-			velocity.y = jump_speed
-	
+		if isWallCling != "false":
+			velocity.x +=  speed * get_wall_normal().x
+		velocity.y = jump_speed
+	if Input.is_action_just_released("jump"):
+		if(!freefall) && velocity.y < 0:
+			velocity.y = 0
+			freefall = true
+		
 	# Add the gravity
 	if isWallCling != "false":
 		if velocity.y < 0:
