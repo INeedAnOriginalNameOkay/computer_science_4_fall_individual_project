@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=3 uid="uid://b4fg52gdj0sbu"]
+
+[ext_resource type="Script" uid="uid://cwilynpmggvll" path="res://enemy.gd" id="1_4gyqm"]
+[ext_resource type="Texture2D" uid="uid://b1keijqqaxfhy" path="res://art/TempEnemy.png" id="1_7k104"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qi2p4"]
+size = Vector2(52, 40)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4gyqm"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_7k104")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Enemy" type="CharacterBody2D"]
+collision_layer = 2
+script = ExtResource("1_4gyqm")
+
+[node name="CollisionBox" type="CollisionShape2D" parent="."]
+position = Vector2(1, 2)
+shape = SubResource("RectangleShape2D_qi2p4")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+visibility_layer = 32
+position = Vector2(0, 8)
+scale = Vector2(0.137963, 0.137963)
+sprite_frames = SubResource("SpriteFrames_4gyqm")
+
+[node name="HurtBox" type="Area2D" parent="."]
+position = Vector2(1, 2)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
+z_index = 1
+shape = SubResource("RectangleShape2D_qi2p4")

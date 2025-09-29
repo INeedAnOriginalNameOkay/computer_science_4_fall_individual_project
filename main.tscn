@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://w30s6s2m628i"]
+[gd_scene load_steps=6 format=3 uid="uid://w30s6s2m628i"]
 
 [ext_resource type="PackedScene" uid="uid://ybl0qgtjjtv7" path="res://player.tscn" id="1_0xm2m"]
 [ext_resource type="Script" uid="uid://dasa8p0fplepg" path="res://main.gd" id="1_h2yge"]
 [ext_resource type="PackedScene" uid="uid://urmmnabgixtj" path="res://temp_floor.tscn" id="2_h2yge"]
 [ext_resource type="PackedScene" uid="uid://duddd3xa0ae5c" path="res://breakable.tscn" id="4_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://b4fg52gdj0sbu" path="res://enemy.tscn" id="5_lquwl"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_h2yge")
@@ -11,6 +12,7 @@ script = ExtResource("1_h2yge")
 [node name="tempFloor" parent="." instance=ExtResource("2_h2yge")]
 
 [node name="player" parent="." instance=ExtResource("1_0xm2m")]
-speed = 350.0
 
 [node name="breakable" parent="." instance=ExtResource("4_1bvp3")]
+
+[node name="Enemy" parent="." instance=ExtResource("5_lquwl")]

@@ -1,46 +1,135 @@
-[gd_scene load_steps=6 format=3 uid="uid://ybl0qgtjjtv7"]
+[gd_scene load_steps=10 format=3 uid="uid://ybl0qgtjjtv7"]
 
-[ext_resource type="Texture2D" uid="uid://bcr5ag1evhyee" path="res://art/TempPlayer.png" id="1_4flbx"]
 [ext_resource type="Script" uid="uid://defibf8h8r2" path="res://player.gd" id="1_onrkg"]
+[ext_resource type="Texture2D" uid="uid://ca1c3j07jybu4" path="res://art/player/Adventurer/Idle/AdventurerIdle.png" id="2_2hs0m"]
+[ext_resource type="Texture2D" uid="uid://dvhhja3j80nt3" path="res://art/player/Adventurer/Jab/AdventurerJab2.png" id="3_2hs0m"]
+[ext_resource type="Texture2D" uid="uid://cgmtv0sp8rayn" path="res://art/player/Adventurer/Jab/AdventurerJab3.png" id="4_1jxqw"]
+[ext_resource type="Texture2D" uid="uid://dluff2fwgb53g" path="res://art/player/Adventurer/Jab/AdventurerJab4.png" id="5_dw050"]
+[ext_resource type="Texture2D" uid="uid://dnju2w8aic165" path="res://art/player/Adventurer/Jab/AdventurerJab5.png" id="6_b26j0"]
+[ext_resource type="Script" uid="uid://s6c6ft43utdy" path="res://state_machine.gd" id="7_1jxqw"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_onrkg"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("1_4flbx")
+"texture": ExtResource("2_2hs0m")
 }],
 "loop": true,
-"name": &"default",
-"speed": 5.0
+"name": &"AdventurerIdle",
+"speed": 60.0
+}, {
+"frames": [{
+"duration": 4.0,
+"texture": ExtResource("3_2hs0m")
+}, {
+"duration": 4.0,
+"texture": ExtResource("4_1jxqw")
+}, {
+"duration": 4.0,
+"texture": ExtResource("5_dw050")
+}, {
+"duration": 4.0,
+"texture": ExtResource("6_b26j0")
+}],
+"loop": true,
+"name": &"AdventurerJab",
+"speed": 60.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i3pqv"]
-size = Vector2(20, 84)
+size = Vector2(14, 26)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_onrkg"]
-size = Vector2(45, 58)
-
-[node name="player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D"]
+position = Vector2(10, 0)
+scale = Vector2(2, 2)
 floor_constant_speed = true
 script = ExtResource("1_onrkg")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(20, -24)
-scale = Vector2(0.14537, 0.14537)
+[node name="animations" type="AnimatedSprite2D" parent="."]
+visibility_layer = 16
+position = Vector2(0, -16)
 sprite_frames = SubResource("SpriteFrames_onrkg")
+animation = &"AdventurerIdle"
 
-[node name="Collision&Hurtbox" type="CollisionShape2D" parent="."]
-position = Vector2(0, -42)
+[node name="CollisionBox" type="CollisionShape2D" parent="."]
+position = Vector2(-5, -13)
 shape = SubResource("RectangleShape2D_i3pqv")
 
-[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
-position = Vector2(0, -42)
-scale = Vector2(1, 4.2)
+[node name="WallJumpKickback" type="Timer" parent="."]
+process_callback = 0
+wait_time = 0.15
+one_shot = true
 
-[node name="Attack" type="Area2D" parent="."]
+[node name="DashTimer" type="Timer" parent="."]
+process_callback = 0
+one_shot = true
 
-[node name="Hitbox" type="CollisionShape2D" parent="Attack"]
-position = Vector2(32.5, -43)
-shape = SubResource("RectangleShape2D_onrkg")
+[node name="Raycast" type="Node2D" parent="."]
 
-[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
+[node name="LedgeR" type="RayCast2D" parent="Raycast"]
+position = Vector2(-5, -15)
+target_position = Vector2(30, 0)
+
+[node name="GroundR" type="RayCast2D" parent="Raycast"]
+position = Vector2(-5, 0)
+target_position = Vector2(30, 0)
+
+[node name="LedgeL" type="RayCast2D" parent="Raycast"]
+position = Vector2(-5, -15)
+target_position = Vector2(-30, 0)
+
+[node name="GroundL" type="RayCast2D" parent="Raycast"]
+position = Vector2(-5, 0)
+target_position = Vector2(-30, 0)
+
+[node name="StateMachine" type="Node" parent="."]
+script = ExtResource("7_1jxqw")
+
+[node name="Idle" type="Node" parent="StateMachine"]
+
+[node name="Walk" type="Node" parent="StateMachine"]
+
+[node name="Jump" type="Node" parent="StateMachine"]
+
+[node name="Fall" type="Node" parent="StateMachine"]
+
+[node name="LedgeGrab" type="Node" parent="StateMachine"]
+
+[node name="WallCling" type="Node" parent="StateMachine"]
+
+[node name="Freefall" type="Node" parent="StateMachine"]
+
+[node name="Jab" type="Node" parent="StateMachine"]
+
+[node name="Filt" type="Node" parent="StateMachine"]
+
+[node name="Dilt" type="Node" parent="StateMachine"]
+
+[node name="Uilt" type="Node" parent="StateMachine"]
+
+[node name="Nair" type="Node" parent="StateMachine"]
+
+[node name="Fair" type="Node" parent="StateMachine"]
+
+[node name="Dair" type="Node" parent="StateMachine"]
+
+[node name="Uair" type="Node" parent="StateMachine"]
+
+[node name="Bair" type="Node" parent="StateMachine"]
+
+[node name="Fmash" type="Node" parent="StateMachine"]
+
+[node name="Umash" type="Node" parent="StateMachine"]
+
+[node name="Dmash" type="Node" parent="StateMachine"]
+
+[node name="Special" type="Node" parent="StateMachine"]
+
+[node name="Uustom" type="Node" parent="StateMachine"]
+
+[node name="Dustum" type="Node" parent="StateMachine"]
+
+[node name="Ultimate" type="Node" parent="StateMachine"]
+
+[connection signal="timeout" from="WallJumpKickback" to="." method="_on_wall_jump_kickback_timeout"]
+[connection signal="timeout" from="DashTimer" to="." method="_on_dash_timer_timeout"]
