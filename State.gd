@@ -1,10 +1,9 @@
-class_name State
-extends Node
+class_name State extends Node
 
 @export var animation_name: String
 @export var move_speed: float
 @export var attack: Attack
-var parent: Entity
+var parent: StateMachine
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 signal finished(new_state: String)
 
@@ -13,8 +12,8 @@ func enter():
 	parent.animations.play(animation_name)
 	
 #when leaving state
-func exit():
-	pass
+func exit(newState: State):
+	parent.transition(newState)
 
 #when an input happens
 func process_input(event: InputEvent) -> State: #
