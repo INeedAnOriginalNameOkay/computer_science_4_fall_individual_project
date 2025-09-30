@@ -1,31 +1,29 @@
 class_name State
 extends Node
 
-# Node name is state name
+@export var animation_name: String
+@export var move_speed: float
+@export var attack: Attack
+var parent: Entity
+var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
+signal finished(new_state: String)
 
-var transitions := {}
-func _ready():
-	var valid_transitions = _recursively_get_transitions_from_children()
-	print(valid_transitions)
-	for transition in valid_transitions:
-		transitions[transition.name] = transition
-
-func on_entry():
+#when 1st entering state
+func enter():
+	parent.animations.play(animation_name)
+	
+#when leaving state
+func exit():
 	pass
-func on_process():
-	pass
-func on_exit():
-	pass
 
-func _recursively_get_transitions_from_children():
-	var node_queue := get_children()
-	var state_transitions := []
+#when an input happens
+func process_input(event: InputEvent) -> State: #
+	return null
 
-	while node_queue.size() > 0:
-		var node = node_queue.pop_front()
-		if node is Transition:
-			state_transitions.append(node)
-		else:
-			node_queue.append_array(node.get_children())
+#every normmal update tick
+func frame(delta: float) -> State:
+	return null
 
-	return state_transitions
+#every physics update tick
+func process_physics(delta: float) -> State:
+	return null

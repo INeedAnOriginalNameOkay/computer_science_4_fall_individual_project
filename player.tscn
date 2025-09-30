@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://ybl0qgtjjtv7"]
+[gd_scene load_steps=10 format=3 uid="uid://ybl0qgtjjtv7"]
 
 [ext_resource type="Script" uid="uid://defibf8h8r2" path="res://player.gd" id="1_onrkg"]
 [ext_resource type="Texture2D" uid="uid://ca1c3j07jybu4" path="res://art/player/Adventurer/Idle/AdventurerIdle.png" id="2_2hs0m"]
@@ -6,8 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://cgmtv0sp8rayn" path="res://art/player/Adventurer/Jab/AdventurerJab3.png" id="4_1jxqw"]
 [ext_resource type="Texture2D" uid="uid://dluff2fwgb53g" path="res://art/player/Adventurer/Jab/AdventurerJab4.png" id="5_dw050"]
 [ext_resource type="Texture2D" uid="uid://dnju2w8aic165" path="res://art/player/Adventurer/Jab/AdventurerJab5.png" id="6_b26j0"]
-[ext_resource type="Script" uid="uid://ewfgycgiesvs" path="res://PlayerStateMachine.gd" id="7_1jxqw"]
-[ext_resource type="Script" uid="uid://ksnei0ura7sb" path="res://idle.gd" id="8_dw050"]
+[ext_resource type="Script" uid="uid://s6c6ft43utdy" path="res://state_machine.gd" id="7_1jxqw"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_onrkg"]
 animations = [{
@@ -87,7 +86,6 @@ target_position = Vector2(-30, 0)
 script = ExtResource("7_1jxqw")
 
 [node name="Idle" type="Node" parent="StateMachine"]
-script = ExtResource("8_dw050")
 
 [node name="Walk" type="Node" parent="StateMachine"]
 
