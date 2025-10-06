@@ -103,23 +103,20 @@ canTransitionTo = [NodePath("../Jump"), NodePath("../Fall"), NodePath("../Walk")
 [node name="Walk" type="Node" parent="StateMachine" node_paths=PackedStringArray("parent", "canTransitionTo")]
 script = ExtResource("9_nvl01")
 animation_name = "AdventurerIdle"
-move_speed = 350.0
 parent = NodePath("..")
 canTransitionTo = [NodePath("../Jump"), NodePath("../Fall"), NodePath("../Idle")]
 
 [node name="Jump" type="Node" parent="StateMachine" node_paths=PackedStringArray("parent", "canTransitionTo")]
 script = ExtResource("9_b26j0")
 animation_name = "AdventurerIdle"
-move_speed = 350.0
 parent = NodePath("..")
 canTransitionTo = [NodePath("../Fall")]
 
 [node name="Fall" type="Node" parent="StateMachine" node_paths=PackedStringArray("parent", "canTransitionTo")]
 script = ExtResource("10_n7ghd")
 animation_name = "AdventurerIdle"
-move_speed = 350.0
 parent = NodePath("..")
-canTransitionTo = [NodePath("../Idle")]
+canTransitionTo = [NodePath("../Idle"), NodePath("../Jump")]
 
 [node name="LedgeGrab" type="Node" parent="StateMachine"]
 

@@ -1,7 +1,6 @@
 class_name State extends Node
 
 @export var animation_name: String
-@export var move_speed: float
 @export var attack: Attack
 @export var parent: StateMachine
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
@@ -27,3 +26,17 @@ func process(delta: float):
 #every physics update tick
 func process_physics(delta: float):
 	return null
+
+func fall_speed(modifier: float):
+	parent.parent.velocity.y += gravity * PlayerGlobals.weight * modifier
+	if(parent.parent.velocity.y >= gravity * PlayerGlobals.weight * 10):
+		parent.parent.velocity.y = gravity * PlayerGlobals.weight * 10
+		
+func horizontal_speed(modifier: float):
+	var deltax = (PlayerGlobals.move_speed - parent.parent.velocity.x) * (PlayerGlobals.grip / 5)
+	if(Input.is_action_pressed("ui_left")):
+		parent.parent.velocity.x -= deltax
+		
+	elif(Input.is_action_pressed("ui_right")):
+		parent.parent.velocity.x += deltax
+	

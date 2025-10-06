@@ -1,8 +1,9 @@
 class_name walk extends State
 	
 func process_input(event: InputEvent):
-	if(event.is_action_pressed("jump")):
-		exit(canTransitionTo[0])
+	if(Input.is_action_just_pressed("jump") && PlayerGlobals.jumpCount > 0):
+		exit(canTransitionTo[1])
+		PlayerGlobals.jumpCount -= 1
 		
 	elif(!parent.parent.is_on_floor()):
 		exit(canTransitionTo[1])
@@ -16,4 +17,4 @@ func exit(newState: State):
 	super(newState)
 
 func process_physics(delta:float):
-	parent.parent.velocity.x = move_speed*Input.get_axis("ui_left", "ui_right")
+	horizontal_speed(1)

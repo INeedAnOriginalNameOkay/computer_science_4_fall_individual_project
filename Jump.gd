@@ -7,16 +7,14 @@ func process_input(event: InputEvent):
 	return null
 
 func enter():
-	parent.parent.velocity.y = -1000
+	parent.parent.velocity.y = 0 - PlayerGlobals.jumpPower
 	
 func exit(newState: State):
 	parent.parent.velocity.x = 0
 	super(newState)
 	
 func process_physics(delta: float):
-	parent.parent.velocity.x = move_speed*Input.get_axis("ui_left", "ui_right")
-	parent.parent.velocity.y += gravity/2
-	if(parent.parent.velocity.y >= gravity * 10):
-		parent.parent.velocity.y = gravity * 10
+	horizontal_speed(1)
+	fall_speed(1)
 	if parent.parent.velocity.y >= 0:
 		exit(canTransitionTo[0])

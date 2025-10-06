@@ -6,7 +6,6 @@ extends CharacterBody2D
 @export var statemach: StateMachine
 
 func _ready() -> void:
-	statemach.move_speed = move_speed
 	statemach.enter()
 	
 func _physics_process(delta: float) -> void:

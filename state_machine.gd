@@ -2,12 +2,10 @@ class_name StateMachine extends Node
 
 @export var initState: State
 @export var parent: Entity
-@export var move_speed: float
 var state: State
 
 func enter():
 	state = initState
-	state.move_speed = move_speed
 	state.enter()
 	
 func transition(newState: State):
