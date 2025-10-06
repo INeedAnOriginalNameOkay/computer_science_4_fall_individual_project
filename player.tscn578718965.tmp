@@ -49,7 +49,7 @@ scale = Vector2(2, 2)
 floor_constant_speed = true
 script = ExtResource("1_1jxqw")
 animations = NodePath("animations")
-move_speed = 500.0
+move_speed = 400.0
 statemach = NodePath("StateMachine")
 
 [node name="animations" type="AnimatedSprite2D" parent="."]
@@ -102,22 +102,22 @@ canTransitionTo = [NodePath("../Jump"), NodePath("../Fall"), NodePath("../Walk")
 
 [node name="Walk" type="Node" parent="StateMachine" node_paths=PackedStringArray("parent", "canTransitionTo")]
 script = ExtResource("9_nvl01")
-animation_name = "AdventurerIdle"
-move_speed = 350.0
+animation_name = null
+move_speed = 200.0
 parent = NodePath("..")
 canTransitionTo = [NodePath("../Jump"), NodePath("../Fall"), NodePath("../Idle")]
 
 [node name="Jump" type="Node" parent="StateMachine" node_paths=PackedStringArray("parent", "canTransitionTo")]
 script = ExtResource("9_b26j0")
 animation_name = "AdventurerIdle"
-move_speed = 350.0
+move_speed = 200.0
 parent = NodePath("..")
 canTransitionTo = [NodePath("../Fall")]
 
 [node name="Fall" type="Node" parent="StateMachine" node_paths=PackedStringArray("parent", "canTransitionTo")]
 script = ExtResource("10_n7ghd")
 animation_name = "AdventurerIdle"
-move_speed = 350.0
+move_speed = 200.0
 parent = NodePath("..")
 canTransitionTo = [NodePath("../Idle")]
 
