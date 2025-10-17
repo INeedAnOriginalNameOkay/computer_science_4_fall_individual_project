@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://ybl0qgtjjtv7"]
+[gd_scene load_steps=19 format=3 uid="uid://ybl0qgtjjtv7"]
 
 [ext_resource type="Script" uid="uid://dsq18iuv8k63a" path="res://player.gd" id="1_u1c27"]
 [ext_resource type="Texture2D" uid="uid://ca1c3j07jybu4" path="res://art/player/Adventurer/Idle/AdventurerIdle.png" id="2_2hs0m"]
@@ -16,7 +16,6 @@
 [ext_resource type="Script" uid="uid://dp1fe6jmke2op" path="res://PlayerFall.gd" id="10_n7ghd"]
 [ext_resource type="Texture2D" uid="uid://cuwwrvb1icyvy" path="res://art/player/Adventurer/Walk/AdventurerWalk3.png" id="10_q13i1"]
 [ext_resource type="Script" uid="uid://c8xojrdxgkup5" path="res://PlayerWallCling.gd" id="16_u1c27"]
-[ext_resource type="Script" uid="uid://bdy7yhdduaali" path="res://PlayerLaunched.gd" id="17_op7ga"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_onrkg"]
 animations = [{
@@ -29,19 +28,19 @@ animations = [{
 "speed": 60.0
 }, {
 "frames": [{
-"duration": 5.0,
+"duration": 4.0,
 "texture": ExtResource("3_2hs0m")
 }, {
-"duration": 5.0,
+"duration": 4.0,
 "texture": ExtResource("4_1jxqw")
 }, {
-"duration": 5.0,
+"duration": 4.0,
 "texture": ExtResource("5_dw050")
 }, {
-"duration": 5.0,
+"duration": 4.0,
 "texture": ExtResource("6_b26j0")
 }],
-"loop": false,
+"loop": true,
 "name": &"AdventurerJab",
 "speed": 60.0
 }, {
@@ -73,35 +72,25 @@ script = ExtResource("1_u1c27")
 animations = NodePath("animations")
 move_speed = 500.0
 statemach = NodePath("StateMachine")
-wall_cling_timer = NodePath("CanWallClingTimer")
+wall_cling_timer = NodePath("WallClingTimer")
 
 [node name="animations" type="AnimatedSprite2D" parent="."]
 visibility_layer = 16
 position = Vector2(0, -16)
 sprite_frames = SubResource("SpriteFrames_onrkg")
 animation = &"AdventurerJab"
-frame = 3
-frame_progress = 1.0
 
 [node name="CollisionBox" type="CollisionShape2D" parent="."]
 position = Vector2(-5, -13)
 shape = SubResource("RectangleShape2D_i3pqv")
 
-[node name="CanWallClingTimer" type="Timer" parent="."]
+[node name="WallClingTimer" type="Timer" parent="."]
 process_callback = 0
 wait_time = 0.05
 one_shot = true
 
-[node name="WallSlideTimer" type="Timer" parent="."]
-process_callback = 0
-wait_time = 0.12
-one_shot = true
-
 [node name="DashTimer" type="Timer" parent="."]
 process_callback = 0
-one_shot = true
-
-[node name="LaunchStunTimer" type="Timer" parent="."]
 one_shot = true
 
 [node name="Raycast" type="Node2D" parent="."]
@@ -130,8 +119,9 @@ parent = NodePath("..")
 [node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("parent", "canTransitionTo")]
 script = ExtResource("8_dw050")
 animation_name = "AdventurerIdle"
+animation_loop = true
 parent = NodePath("..")
-canTransitionTo = [NodePath("../Jump"), NodePath("../Fall"), NodePath("../Walk"), NodePath("../Launched")]
+canTransitionTo = [NodePath("../Jump"), NodePath("../Fall"), NodePath("../Walk")]
 
 [node name="Walk" type="Node" parent="StateMachine" node_paths=PackedStringArray("parent", "canTransitionTo")]
 script = ExtResource("9_nvl01")
@@ -139,12 +129,11 @@ animation_name = "AdventurerWalk"
 parent = NodePath("..")
 canTransitionTo = [NodePath("../Jump"), NodePath("../Fall"), NodePath("../Idle")]
 
-[node name="Jump" type="Node" parent="StateMachine" node_paths=PackedStringArray("timer", "parent", "canTransitionTo")]
+[node name="Jump" type="Node" parent="StateMachine" node_paths=PackedStringArray("parent", "canTransitionTo")]
 script = ExtResource("9_b26j0")
-timer = NodePath("../../CanWallClingTimer")
 animation_name = "AdventurerIdle"
 parent = NodePath("..")
-canTransitionTo = [NodePath("../Fall"), NodePath("../WallCling"), NodePath("../Launched")]
+canTransitionTo = [NodePath("../Fall"), NodePath("../WallCling")]
 
 [node name="Fall" type="Node" parent="StateMachine" node_paths=PackedStringArray("parent", "canTransitionTo")]
 script = ExtResource("10_n7ghd")
@@ -154,20 +143,13 @@ canTransitionTo = [NodePath("../Idle"), NodePath("../WallCling"), NodePath("../J
 
 [node name="LedgeGrab" type="Node" parent="StateMachine"]
 
-[node name="WallCling" type="Node" parent="StateMachine" node_paths=PackedStringArray("timer", "parent", "canTransitionTo")]
+[node name="WallCling" type="Node" parent="StateMachine" node_paths=PackedStringArray("parent", "canTransitionTo")]
 script = ExtResource("16_u1c27")
-timer = NodePath("../../WallSlideTimer")
 animation_name = "AdventurerIdle"
 parent = NodePath("..")
 canTransitionTo = [NodePath("../Fall"), NodePath("../Jump")]
 
-[node name="Launched" type="Node" parent="StateMachine" node_paths=PackedStringArray("timer", "parent", "canTransitionTo")]
-script = ExtResource("17_op7ga")
-launch = Vector2(500, -1000)
-timer = NodePath("../../LaunchStunTimer")
-animation_name = "AdventurerIdle"
-parent = NodePath("..")
-canTransitionTo = [NodePath("../Fall")]
+[node name="Launched" type="Node" parent="StateMachine"]
 
 [node name="Freefall" type="Node" parent="StateMachine"]
 
@@ -203,7 +185,6 @@ canTransitionTo = [NodePath("../Fall")]
 
 [node name="Ultimate" type="Node" parent="StateMachine"]
 
-[connection signal="timeout" from="CanWallClingTimer" to="StateMachine/Jump" method="wall_cling_timer"]
-[connection signal="timeout" from="WallSlideTimer" to="StateMachine/WallCling" method="slip_timer"]
+[connection signal="timeout" from="WallClingTimer" to="." method="_on_wall_jump_kickback_timeout"]
+[connection signal="timeout" from="WallClingTimer" to="StateMachine/Jump" method="_on_wall_cling_timer_timeout"]
 [connection signal="timeout" from="DashTimer" to="." method="_on_dash_timer_timeout"]
-[connection signal="timeout" from="LaunchStunTimer" to="StateMachine/Launched" method="_timer_timeout"]

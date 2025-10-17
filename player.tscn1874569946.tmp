@@ -101,9 +101,6 @@ one_shot = true
 process_callback = 0
 one_shot = true
 
-[node name="LaunchStunTimer" type="Timer" parent="."]
-one_shot = true
-
 [node name="Raycast" type="Node2D" parent="."]
 
 [node name="LedgeR" type="RayCast2D" parent="Raycast"]
@@ -131,7 +128,7 @@ parent = NodePath("..")
 script = ExtResource("8_dw050")
 animation_name = "AdventurerIdle"
 parent = NodePath("..")
-canTransitionTo = [NodePath("../Jump"), NodePath("../Fall"), NodePath("../Walk"), NodePath("../Launched")]
+canTransitionTo = [NodePath("../Jump"), NodePath("../Fall"), NodePath("../Walk")]
 
 [node name="Walk" type="Node" parent="StateMachine" node_paths=PackedStringArray("parent", "canTransitionTo")]
 script = ExtResource("9_nvl01")
@@ -144,7 +141,7 @@ script = ExtResource("9_b26j0")
 timer = NodePath("../../CanWallClingTimer")
 animation_name = "AdventurerIdle"
 parent = NodePath("..")
-canTransitionTo = [NodePath("../Fall"), NodePath("../WallCling"), NodePath("../Launched")]
+canTransitionTo = [NodePath("../Fall"), NodePath("../WallCling")]
 
 [node name="Fall" type="Node" parent="StateMachine" node_paths=PackedStringArray("parent", "canTransitionTo")]
 script = ExtResource("10_n7ghd")
@@ -161,13 +158,8 @@ animation_name = "AdventurerIdle"
 parent = NodePath("..")
 canTransitionTo = [NodePath("../Fall"), NodePath("../Jump")]
 
-[node name="Launched" type="Node" parent="StateMachine" node_paths=PackedStringArray("timer", "parent", "canTransitionTo")]
+[node name="Launched" type="Node" parent="StateMachine"]
 script = ExtResource("17_op7ga")
-launch = Vector2(500, -1000)
-timer = NodePath("../../LaunchStunTimer")
-animation_name = "AdventurerIdle"
-parent = NodePath("..")
-canTransitionTo = [NodePath("../Fall")]
 
 [node name="Freefall" type="Node" parent="StateMachine"]
 
@@ -206,4 +198,3 @@ canTransitionTo = [NodePath("../Fall")]
 [connection signal="timeout" from="CanWallClingTimer" to="StateMachine/Jump" method="wall_cling_timer"]
 [connection signal="timeout" from="WallSlideTimer" to="StateMachine/WallCling" method="slip_timer"]
 [connection signal="timeout" from="DashTimer" to="." method="_on_dash_timer_timeout"]
-[connection signal="timeout" from="LaunchStunTimer" to="StateMachine/Launched" method="_timer_timeout"]

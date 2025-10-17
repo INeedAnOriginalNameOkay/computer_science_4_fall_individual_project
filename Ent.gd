@@ -4,6 +4,7 @@ extends CharacterBody2D
 @export var animations: AnimatedSprite2D
 @export var move_speed: float
 @export var statemach: StateMachine
+@export var wall_cling_timer: Timer
 
 func _ready() -> void:
 	statemach.enter()

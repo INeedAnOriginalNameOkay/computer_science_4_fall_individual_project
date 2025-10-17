@@ -1,20 +1,26 @@
 class_name jump extends State
-	
-func process_input(event: InputEvent):
-	if(event.is_action_released("jump")):
-		parent.parent.velocity.y = 0
-		exit(canTransitionTo[0])
-	return null
+
+var canWallCling: bool
+@export var timer: Timer
 
 func enter():
-	parent.parent.velocity.y = 0 - PlayerGlobals.jumpPower
+	canWallCling = false
+	timer.start()
+	parent.parent.wall_cling_timer.start()
+	parent.parent.velocity.y = 0
+	super()
 	
 func exit(newState: State):
-	parent.parent.velocity.x = 0
 	super(newState)
 	
 func process_physics(delta: float):
-	horizontal_speed(1)
-	fall_speed(1)
+	horizontal_speed(.5)
+	fall_speed(1,weight)
 	if parent.parent.velocity.y >= 0:
 		exit(canTransitionTo[0])
+		
+	if (parent.parent.is_on_wall() && canWallCling == true):
+		exit(canTransitionTo[1])
+
+func wall_cling_timer():
+	canWallCling = true
