@@ -4,7 +4,7 @@ class_name State extends Node
 @export var parent: StateMachine
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 @export var canTransitionTo: Array[State]
-var weight: float
+@export var weight: float
 
 #when 1st entering state
 func enter():

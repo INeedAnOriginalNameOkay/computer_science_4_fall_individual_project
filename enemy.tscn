@@ -1,12 +1,14 @@
-[gd_scene load_steps=7 format=3 uid="uid://b4fg52gdj0sbu"]
+[gd_scene load_steps=9 format=3 uid="uid://b4fg52gdj0sbu"]
 
 [ext_resource type="Script" uid="uid://cwilynpmggvll" path="res://enemy.gd" id="1_4gyqm"]
 [ext_resource type="Texture2D" uid="uid://b1keijqqaxfhy" path="res://art/TempEnemy.png" id="1_7k104"]
-[ext_resource type="Script" uid="uid://57scinuvn886" path="res://Idle.gd" id="3_iifgy"]
+[ext_resource type="Script" uid="uid://b1gasoylckoe5" path="res://EnemyStateMachine.gd" id="3_epg4t"]
+[ext_resource type="Script" uid="uid://bvdt7jsarh3kp" path="res://EnemyIdle.gd" id="4_3yqyl"]
 [ext_resource type="Script" uid="uid://d4jd2b4t3tclw" path="res://EnemyLaunched.gd" id="4_epg4t"]
+[ext_resource type="Script" uid="uid://devyoglsbkyjd" path="res://EnemyFall.gd" id="5_3yqyl"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_qi2p4"]
-size = Vector2(52, 40)
+[sub_resource type="CircleShape2D" id="CircleShape2D_3yqyl"]
+radius = 29.0172
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_4gyqm"]
 animations = [{
@@ -19,13 +21,17 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Enemy" type="CharacterBody2D"]
+[node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("animations", "statemach", "i_frame_timer")]
 collision_layer = 2
 script = ExtResource("1_4gyqm")
+animations = NodePath("AnimatedSprite2D")
+statemach = NodePath("StateMachine")
+i_frame_timer = NodePath("CollisionBox/invincibility")
 
 [node name="CollisionBox" type="CollisionShape2D" parent="."]
-position = Vector2(1, 2)
-shape = SubResource("RectangleShape2D_qi2p4")
+position = Vector2(1, 0)
+rotation = 1.5708
+shape = SubResource("CircleShape2D_3yqyl")
 
 [node name="invincibility" type="Timer" parent="CollisionBox"]
 
@@ -38,16 +44,32 @@ sprite_frames = SubResource("SpriteFrames_4gyqm")
 [node name="LaunchStunTimer" type="Timer" parent="."]
 one_shot = true
 
-[node name="StateMachine" type="Node" parent="."]
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initState", "parent")]
+script = ExtResource("3_epg4t")
+initState = NodePath("idle")
+parent = NodePath("..")
 
-[node name="idle" type="Node" parent="StateMachine"]
-script = ExtResource("3_iifgy")
+[node name="idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("parent", "canTransitionTo")]
+script = ExtResource("4_3yqyl")
+animation_name = "default"
+parent = NodePath("..")
+canTransitionTo = [NodePath("../launched"), NodePath("../Fall")]
+weight = 0.5
 metadata/_custom_type_script = "uid://57scinuvn886"
 
-[node name="Fall" type="Node" parent="StateMachine"]
+[node name="Fall" type="Node" parent="StateMachine" node_paths=PackedStringArray("parent", "canTransitionTo")]
+script = ExtResource("5_3yqyl")
+animation_name = "default"
+parent = NodePath("..")
+canTransitionTo = [NodePath("../idle"), NodePath("../launched")]
+weight = 0.5
 metadata/_custom_type_script = "uid://dsct2xjvekvrv"
 
-[node name="launched" type="Node" parent="StateMachine"]
+[node name="launched" type="Node" parent="StateMachine" node_paths=PackedStringArray("timer", "parent", "canTransitionTo")]
 script = ExtResource("4_epg4t")
+timer = NodePath("../../LaunchStunTimer")
 animation_name = "default"
+parent = NodePath("..")
+canTransitionTo = [NodePath("../idle"), NodePath(".")]
+weight = 0.5
 metadata/_custom_type_script = "uid://c6js8l6db5t4c"

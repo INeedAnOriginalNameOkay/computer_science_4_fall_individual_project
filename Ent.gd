@@ -13,7 +13,6 @@ func _ready() -> void:
 	statemach.enter()
 	
 func _physics_process(delta: float) -> void:
-	print(position)
 	statemach.physics_process(delta)
 	move_and_slide()
 	

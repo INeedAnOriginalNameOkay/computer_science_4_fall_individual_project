@@ -1,8 +1,20 @@
-[gd_scene load_steps=2 format=3 uid="uid://b66i38p381f5"]
+[gd_scene load_steps=3 format=3 uid="uid://b66i38p381f5"]
+
+[ext_resource type="Script" uid="uid://d3b51i0pyjf2j" path="res://PlayerAttack.gd" id="1_6dqal"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_66kmp"]
 
-[node name="Hitbox" type="Area2D" groups=["Player Hitbox"]]
+[node name="Hitbox" type="Area2D" node_paths=PackedStringArray("collisionshape", "hitbox_timers") groups=["Player Hitbox"]]
+script = ExtResource("1_6dqal")
+collisionshape = NodePath("CollisionShape2D")
+hitbox_timers = [NodePath("Timer1"), NodePath("Timer2"), NodePath("Timer3")]
+metadata/_custom_type_script = "uid://xahpyywgksat"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_66kmp")
+
+[node name="Timer1" type="Timer" parent="."]
+
+[node name="Timer2" type="Timer" parent="."]
+
+[node name="Timer3" type="Timer" parent="."]

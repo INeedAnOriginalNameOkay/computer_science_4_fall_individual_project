@@ -1,7 +1,8 @@
-[gd_scene load_steps=20 format=3 uid="uid://ybl0qgtjjtv7"]
+[gd_scene load_steps=21 format=3 uid="uid://ybl0qgtjjtv7"]
 
 [ext_resource type="Script" uid="uid://dsq18iuv8k63a" path="res://player.gd" id="1_u1c27"]
 [ext_resource type="Texture2D" uid="uid://ca1c3j07jybu4" path="res://art/player/Adventurer/Idle/AdventurerIdle.png" id="2_2hs0m"]
+[ext_resource type="PackedScene" uid="uid://b66i38p381f5" path="res://player_hitbox.tscn" id="2_q13i1"]
 [ext_resource type="Texture2D" uid="uid://dvhhja3j80nt3" path="res://art/player/Adventurer/Jab/AdventurerJab2.png" id="3_2hs0m"]
 [ext_resource type="Texture2D" uid="uid://cgmtv0sp8rayn" path="res://art/player/Adventurer/Jab/AdventurerJab3.png" id="4_1jxqw"]
 [ext_resource type="Texture2D" uid="uid://dluff2fwgb53g" path="res://art/player/Adventurer/Jab/AdventurerJab4.png" id="5_dw050"]
@@ -63,8 +64,8 @@ animations = [{
 "speed": 60.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_i3pqv"]
-size = Vector2(14, 26)
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_op7ga"]
+height = 26.0
 
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("animations", "statemach", "wall_cling_timer", "i_frame_timer")]
 scale = Vector2(2, 2)
@@ -86,7 +87,7 @@ frame_progress = 1.0
 
 [node name="CollisionBox" type="CollisionShape2D" parent="." groups=["Player Hurtbox"]]
 position = Vector2(-5, -13)
-shape = SubResource("RectangleShape2D_i3pqv")
+shape = SubResource("CapsuleShape2D_op7ga")
 
 [node name="invincibility" type="Timer" parent="CollisionBox"]
 
@@ -175,6 +176,9 @@ canTransitionTo = [NodePath("../Fall")]
 [node name="Freefall" type="Node" parent="StateMachine"]
 
 [node name="Jab" type="Node" parent="StateMachine"]
+
+[node name="Hitbox" parent="StateMachine/Jab" instance=ExtResource("2_q13i1")]
+position = Vector2(20, -26)
 
 [node name="Filt" type="Node" parent="StateMachine"]
 
