@@ -22,3 +22,12 @@ func process(delta:float):
 		parent.parent.animations.flip_h = false
 		
 	super(delta)
+
+func fall_speed(modifier: float, weight: float):
+	PlayerGlobals.fall_speed(modifier, weight)
+	parent.parent.velocity.y = PlayerGlobals.y_velocity
+		
+func horizontal_speed(modifier: float):
+	PlayerGlobals.horizontal_speed(modifier)
+	parent.parent.velocity.x = PlayerGlobals.x_velocity
+	

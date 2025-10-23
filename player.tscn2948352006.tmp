@@ -66,7 +66,7 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i3pqv"]
 size = Vector2(14, 26)
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("animations", "statemach", "wall_cling_timer", "i_frame_timer")]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("animations", "statemach", "wall_cling_timer")]
 scale = Vector2(2, 2)
 floor_constant_speed = true
 script = ExtResource("1_u1c27")
@@ -74,7 +74,6 @@ animations = NodePath("animations")
 move_speed = 500.0
 statemach = NodePath("StateMachine")
 wall_cling_timer = NodePath("CanWallClingTimer")
-i_frame_timer = NodePath("CollisionBox/invincibility")
 
 [node name="animations" type="AnimatedSprite2D" parent="."]
 visibility_layer = 16
@@ -147,13 +146,13 @@ script = ExtResource("9_b26j0")
 timer = NodePath("../../CanWallClingTimer")
 animation_name = "AdventurerIdle"
 parent = NodePath("..")
-canTransitionTo = [NodePath("../Fall"), NodePath("../Launched")]
+canTransitionTo = [NodePath("../Fall"), NodePath("../WallCling"), NodePath("../Launched")]
 
 [node name="Fall" type="Node" parent="StateMachine" node_paths=PackedStringArray("parent", "canTransitionTo")]
 script = ExtResource("10_n7ghd")
 animation_name = "AdventurerIdle"
 parent = NodePath("..")
-canTransitionTo = [NodePath("../Idle"), NodePath("../Jump"), NodePath("../Walk")]
+canTransitionTo = [NodePath("../Idle"), NodePath("../WallCling"), NodePath("../Jump")]
 
 [node name="LedgeGrab" type="Node" parent="StateMachine"]
 

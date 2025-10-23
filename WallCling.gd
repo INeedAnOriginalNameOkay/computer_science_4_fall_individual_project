@@ -7,8 +7,6 @@ var slip: bool
 func enter():
 	timer.start()
 	slip = false
-	parent.parent.velocity.x = 0
-	parent.parent.velocity.y = 0
 	direction = parent.parent.get_wall_normal().x
 	if(direction == 1):
 		parent.parent.animations.flip_h = false

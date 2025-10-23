@@ -2,6 +2,20 @@ extends fall
 
 func process_input(event: InputEvent):
 	if(Input.is_action_just_pressed("jump") && PlayerGlobals.jumpCount > 0):
-		exit(canTransitionTo[2])
+		exit(canTransitionTo[1])
 		PlayerGlobals.jumpCount -= 1
+
+func process(delta:float):
+	if (Input.get_action_strength("ui_left") - Input.get_action_strength("ui_right")) != 0 && parent.parent.is_on_floor():
+		exit(canTransitionTo[2])
+		return
+	super(delta)
+
+func fall_speed(modifier: float, weight: float):
+	PlayerGlobals.fall_speed(modifier, weight)
+	parent.parent.velocity.y = PlayerGlobals.y_velocity
+		
+func horizontal_speed(modifier: float):
+	PlayerGlobals.horizontal_speed(modifier)
+	parent.parent.velocity.x = PlayerGlobals.x_velocity
 	

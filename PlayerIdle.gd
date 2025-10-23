@@ -2,6 +2,9 @@ extends idle
 
 func enter():
 	PlayerGlobals.jumpCount = PlayerGlobals.maxJumpCount
+	PlayerGlobals.x_velocity = 0
+	PlayerGlobals.y_velocity = 0
+	parent.parent.velocity.x = 0
 	super()
 
 func process_input(event: InputEvent):
@@ -10,6 +13,7 @@ func process_input(event: InputEvent):
 		PlayerGlobals.jumpCount -= 1
 	if(Input.is_action_just_pressed("ui_focus_next")):
 		exit(canTransitionTo[3])
+		
 func process(delta: float):
 	super(delta)
 	if(Input.get_axis("ui_left", "ui_right") != 0):

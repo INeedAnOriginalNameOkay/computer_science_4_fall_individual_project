@@ -19,6 +19,12 @@ config/icon="res://icon.svg"
 
 PlayerGlobals="*res://PlayerGlobals.gd"
 
+[global_group]
+
+"Enemy Hurtbox"="Enemy Hurt Box"
+"Player Hitbox"="Player Hitbox"
+"Player Hurtbox"="Blayer Hurt Box"
+
 [input]
 
 ui_left={

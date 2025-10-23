@@ -1,4 +1,5 @@
-extends Node
+class_name hitbox extends Node
+#make projectile a class that inherits attack
 
 @export var force: Vector2 
 #Launching. x vector assumes right
@@ -6,7 +7,9 @@ extends Node
  #damage
 @export var pen: float
  #shield breaking and armor ignoring
-@export var hitboxes: Array[Vector2]
- # pairs (1 for location rlative to summoner, another for the sizing)
-@export var projectile: String
-# if not some null, creates projectiles with above appearance Hitboxes array needs 2  : location (center) and one for size
+@export var radius: float
+@export var height: float
+@export var pos: float
+@export var rotation: float
+@export var forswing: float
+@export var duration: float

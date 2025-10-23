@@ -16,11 +16,11 @@ func exit(newState: State):
 func process_physics(delta: float):
 	horizontal_speed(.5)
 	fall_speed(1,weight)
-	if parent.parent.velocity.y >= 0:
+	if parent.parent.velocity.y >= 0 or parent.parent.is_on_ceiling():
 		exit(canTransitionTo[0])
 		
-	if (parent.parent.is_on_wall() && canWallCling == true):
-		exit(canTransitionTo[1])
+	#if (parent.parent.is_on_wall() && canWallCling == true):
+		#exit(canTransitionTo[1])
 
 func wall_cling_timer():
 	canWallCling = true
