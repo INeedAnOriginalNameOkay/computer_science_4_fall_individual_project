@@ -1,7 +1,7 @@
-class_name hitbox extends Node
-#make projectile a class that inherits attack
+class_name hitbox extends Area2D
+#make projectile a class that inherits attacks
 
-@export var force: Vector2 
+@export var knockback: Vector2 
 #Launching. x vector assumes right
 @export var damage: float
  #damage
@@ -9,7 +9,6 @@ class_name hitbox extends Node
  #shield breaking and armor ignoring
 @export var radius: float
 @export var height: float
-@export var pos: float
-@export var rotation: float
 @export var forswing: float
 @export var duration: float
+@export var offset:Vector2

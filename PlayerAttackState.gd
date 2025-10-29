@@ -4,4 +4,8 @@ class_name PlayerAttackState extends AttackState
 
 func enter():
 	attacks = attack_p
+	PlayerGlobals.launchVector = attack_p.data.knockback
+	if(parent.parent.animations.flip_h == true):
+		PlayerGlobals.launchVector.x = 0 - PlayerGlobals.launchVector.x
+	print(PlayerGlobals.launchVector)
 	super()

@@ -6,6 +6,8 @@ extends CharacterBody2D
 @export var statemach: StateMachine
 @export var wall_cling_timer: Timer
 @export var i_frame_timer: Timer
+@export var launch_state: State
+@export var hurtbox: CollisionShape2D
 var invincible: bool
 
 func _ready() -> void:
@@ -16,12 +18,7 @@ func _physics_process(delta: float) -> void:
 	statemach.physics_process(delta)
 	move_and_slide()
 	
-func _process(delta: float) -> void:
-	if(invincible && animations.visible == true):
-		animations.visible = false
-	else:
-		animations.visible = true
-	
+func _process(delta: float) -> void:	
 	statemach.process(delta)
 
 func _input(event: InputEvent) -> void:
@@ -32,3 +29,6 @@ func play_anim(str: String):
 
 func check_collisions(body):
 	pass
+
+func _end_invincibility():
+	invincible = false

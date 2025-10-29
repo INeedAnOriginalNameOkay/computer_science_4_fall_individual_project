@@ -19,9 +19,7 @@
 [ext_resource type="Script" uid="uid://c8xojrdxgkup5" path="res://PlayerWallCling.gd" id="16_u1c27"]
 [ext_resource type="Script" uid="uid://bdy7yhdduaali" path="res://PlayerLaunched.gd" id="17_op7ga"]
 [ext_resource type="Script" uid="uid://dkp4g1amp07l3" path="res://PlayerJab.gd" id="18_pylmc"]
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pbfsw"]
-radius = 11.0
+[ext_resource type="Script" uid="uid://bw78ksqmbo5jx" path="res://attack.gd" id="20_pbfsw"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_onrkg"]
 animations = [{
@@ -34,16 +32,16 @@ animations = [{
 "speed": 60.0
 }, {
 "frames": [{
-"duration": 4.0,
+"duration": 5.0,
 "texture": ExtResource("3_2hs0m")
 }, {
-"duration": 4.0,
+"duration": 5.0,
 "texture": ExtResource("4_1jxqw")
 }, {
-"duration": 4.0,
+"duration": 5.0,
 "texture": ExtResource("5_dw050")
 }, {
-"duration": 4.0,
+"duration": 5.0,
 "texture": ExtResource("6_b26j0")
 }],
 "loop": false,
@@ -71,8 +69,7 @@ animations = [{
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_op7ga"]
 height = 26.0
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("animations", "statemach", "wall_cling_timer", "i_frame_timer", "launch_state", "hurtbox")]
-position = Vector2(11, 0)
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("animations", "statemach", "wall_cling_timer", "i_frame_timer")]
 scale = Vector2(2, 2)
 floor_constant_speed = true
 script = ExtResource("1_u1c27")
@@ -81,22 +78,14 @@ move_speed = 500.0
 statemach = NodePath("StateMachine")
 wall_cling_timer = NodePath("CanWallClingTimer")
 i_frame_timer = NodePath("CollisionBox/invincibility")
-launch_state = NodePath("StateMachine/Launched")
-hurtbox = NodePath("CollisionBox")
-
-[node name="Area2D" type="Area2D" parent="."]
-collision_priority = 10.0
-
-[node name="CollisionBox" type="CollisionShape2D" parent="Area2D" groups=["Player Hurtbox"]]
-position = Vector2(-5, -13)
-shape = SubResource("CapsuleShape2D_pbfsw")
-debug_color = Color(0.939871, 0.168677, 0.454205, 0.42)
 
 [node name="animations" type="AnimatedSprite2D" parent="."]
 visibility_layer = 16
-position = Vector2(-5.4, -16)
+position = Vector2(0, -16)
 sprite_frames = SubResource("SpriteFrames_onrkg")
-animation = &"AdventurerIdle"
+animation = &"AdventurerJab"
+frame = 3
+frame_progress = 1.0
 
 [node name="CollisionBox" type="CollisionShape2D" parent="." groups=["Player Hurtbox"]]
 position = Vector2(-5, -13)
@@ -116,9 +105,6 @@ one_shot = true
 
 [node name="DashTimer" type="Timer" parent="."]
 process_callback = 0
-one_shot = true
-
-[node name="AttackTimer" type="Timer" parent="."]
 one_shot = true
 
 [node name="LaunchStunTimer" type="Timer" parent="."]
@@ -142,10 +128,6 @@ target_position = Vector2(-30, 0)
 position = Vector2(-5, 0)
 target_position = Vector2(-30, 0)
 
-[node name="Ceiling" type="RayCast2D" parent="Raycast"]
-position = Vector2(-5, -13)
-target_position = Vector2(0, -20)
-
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initState", "parent")]
 script = ExtResource("7_1jxqw")
 initState = NodePath("Idle")
@@ -163,9 +145,8 @@ animation_name = "AdventurerWalk"
 parent = NodePath("..")
 canTransitionTo = [NodePath("../Jump"), NodePath("../Fall"), NodePath("../Idle")]
 
-[node name="Jump" type="Node" parent="StateMachine" node_paths=PackedStringArray("raycast", "timer", "parent", "canTransitionTo")]
+[node name="Jump" type="Node" parent="StateMachine" node_paths=PackedStringArray("timer", "parent", "canTransitionTo")]
 script = ExtResource("9_b26j0")
-raycast = NodePath("../../Raycast/Ceiling")
 timer = NodePath("../../CanWallClingTimer")
 animation_name = "AdventurerIdle"
 parent = NodePath("..")
@@ -176,6 +157,7 @@ script = ExtResource("10_n7ghd")
 animation_name = "AdventurerIdle"
 parent = NodePath("..")
 canTransitionTo = [NodePath("../Idle"), NodePath("../Jump"), NodePath("../Walk")]
+weight = null
 
 [node name="LedgeGrab" type="Node" parent="StateMachine"]
 
@@ -188,6 +170,7 @@ canTransitionTo = [NodePath("../Fall"), NodePath("../Jump")]
 
 [node name="Launched" type="Node" parent="StateMachine" node_paths=PackedStringArray("timer", "parent", "canTransitionTo")]
 script = ExtResource("17_op7ga")
+launch = Vector2(500, -1000)
 timer = NodePath("../../LaunchStunTimer")
 animation_name = "AdventurerIdle"
 parent = NodePath("..")
@@ -195,26 +178,25 @@ canTransitionTo = [NodePath("../Fall")]
 
 [node name="Freefall" type="Node" parent="StateMachine"]
 
-[node name="Jab" type="Node" parent="StateMachine" node_paths=PackedStringArray("attack_p", "timer", "parent", "canTransitionTo")]
+[node name="Jab" type="Node" parent="StateMachine" node_paths=PackedStringArray("attack_p", "parent", "canTransitionTo")]
 script = ExtResource("18_pylmc")
 attack_p = NodePath("Hitbox")
-timer = NodePath("../../AttackTimer")
 animation_name = "AdventurerJab"
 parent = NodePath("..")
 canTransitionTo = [NodePath("../Fall"), NodePath("../Idle")]
 
-[node name="Hitbox" parent="StateMachine/Jab" node_paths=PackedStringArray("ent", "data", "area") instance=ExtResource("2_q13i1")]
-position = Vector2(31, -26)
-ent = NodePath("../../..")
-data = NodePath(".")
-area = NodePath(".")
-knockback = Vector2(250, -400)
+[node name="Hitbox" parent="StateMachine/Jab" node_paths=PackedStringArray("data") instance=ExtResource("2_q13i1")]
+position = Vector2(20, -26)
+data = NodePath("hitbox")
+
+[node name="hitbox" type="Node" parent="StateMachine/Jab/Hitbox"]
+script = ExtResource("20_pbfsw")
 damage = 1.0
 radius = 100.0
-height = 500.0
+height = 100.0
 forswing = 0.067
 duration = 0.2
-offset = Vector2(20, -25)
+metadata/_custom_type_script = "uid://bw78ksqmbo5jx"
 
 [node name="Filt" type="Node" parent="StateMachine"]
 
@@ -246,9 +228,7 @@ offset = Vector2(20, -25)
 
 [node name="Ultimate" type="Node" parent="StateMachine"]
 
-[connection signal="area_entered" from="Area2D" to="." method="check_collisions"]
 [connection signal="timeout" from="CanWallClingTimer" to="StateMachine/Jump" method="wall_cling_timer"]
 [connection signal="timeout" from="WallSlideTimer" to="StateMachine/WallCling" method="slip_timer"]
 [connection signal="timeout" from="DashTimer" to="." method="_on_dash_timer_timeout"]
-[connection signal="timeout" from="AttackTimer" to="StateMachine/Jab" method="_end_timer"]
 [connection signal="timeout" from="LaunchStunTimer" to="StateMachine/Launched" method="_timer_timeout"]

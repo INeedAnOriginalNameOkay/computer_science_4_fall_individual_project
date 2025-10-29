@@ -4,17 +4,12 @@
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_66kmp"]
 
-[node name="Hitbox" type="Area2D" node_paths=PackedStringArray("collisionshape", "hitbox_timers") groups=["Player Hitbox"]]
+[node name="Hitbox" type="Area2D" node_paths=PackedStringArray("coll") groups=["Player Hitbox"]]
 script = ExtResource("1_6dqal")
-collisionshape = NodePath("CollisionShape2D")
-hitbox_timers = [NodePath("Timer1"), NodePath("Timer2"), NodePath("Timer3")]
+coll = NodePath("CollisionShape2D")
 metadata/_custom_type_script = "uid://xahpyywgksat"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_66kmp")
 
 [node name="Timer1" type="Timer" parent="."]
-
-[node name="Timer2" type="Timer" parent="."]
-
-[node name="Timer3" type="Timer" parent="."]

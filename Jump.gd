@@ -1,6 +1,7 @@
 class_name jump extends State
 
 var canWallCling: bool
+@export var raycast: RayCast2D
 @export var timer: Timer
 
 func enter():
@@ -16,7 +17,10 @@ func exit(newState: State):
 func process_physics(delta: float):
 	horizontal_speed(.5)
 	fall_speed(1,weight)
-	if parent.parent.velocity.y >= 0 or parent.parent.is_on_ceiling():
+	if parent.parent.velocity.y >= 0:
+		exit(canTransitionTo[0])
+	if raycast.is_colliding():
+		parent.parent.velocity.y = 0
 		exit(canTransitionTo[0])
 		
 	#if (parent.parent.is_on_wall() && canWallCling == true):

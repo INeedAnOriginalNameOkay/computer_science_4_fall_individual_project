@@ -7,9 +7,12 @@ func process_input(event: InputEvent):
 	if(event.is_action_released("jump")):
 		PlayerGlobals.y_velocity = 0
 		exit(canTransitionTo[0])
-	if(Input.is_action_just_pressed("ui_focus_next")):
-		exit(canTransitionTo[2])
 
+func exit(newState: State):
+	if(PlayerGlobals.y_velocity > 0):
+		PlayerGlobals.y_velocity = 0
+	super(newState)
+		
 func fall_speed(modifier: float, weight: float):
 	PlayerGlobals.fall_speed(modifier, weight)
 	parent.parent.velocity.y = PlayerGlobals.y_velocity

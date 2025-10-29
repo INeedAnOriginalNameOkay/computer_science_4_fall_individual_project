@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://b4fg52gdj0sbu"]
+[gd_scene load_steps=10 format=3 uid="uid://b4fg52gdj0sbu"]
 
 [ext_resource type="Script" uid="uid://cwilynpmggvll" path="res://enemy.gd" id="1_4gyqm"]
 [ext_resource type="Texture2D" uid="uid://b1keijqqaxfhy" path="res://art/TempEnemy.png" id="1_7k104"]
@@ -6,6 +6,9 @@
 [ext_resource type="Script" uid="uid://bvdt7jsarh3kp" path="res://EnemyIdle.gd" id="4_3yqyl"]
 [ext_resource type="Script" uid="uid://d4jd2b4t3tclw" path="res://EnemyLaunched.gd" id="4_epg4t"]
 [ext_resource type="Script" uid="uid://devyoglsbkyjd" path="res://EnemyFall.gd" id="5_3yqyl"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wujgv"]
+radius = 34.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3yqyl"]
 radius = 29.0172
@@ -21,19 +24,31 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("animations", "statemach", "i_frame_timer")]
+[node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("animations", "statemach", "i_frame_timer", "launch_state", "hurtbox")]
 collision_layer = 2
 script = ExtResource("1_4gyqm")
 animations = NodePath("AnimatedSprite2D")
 statemach = NodePath("StateMachine")
 i_frame_timer = NodePath("CollisionBox/invincibility")
+launch_state = NodePath("StateMachine/launched")
+hurtbox = NodePath("CollisionBox")
 
-[node name="CollisionBox" type="CollisionShape2D" parent="."]
+[node name="Area2D" type="Area2D" parent="." groups=["Enemy Hurtbox"]]
+collision_priority = 10.0
+
+[node name="CollisionBox" type="CollisionShape2D" parent="Area2D" groups=["Enemy Hurtbox"]]
+position = Vector2(1, 0)
+rotation = 1.5708
+shape = SubResource("CircleShape2D_wujgv")
+debug_color = Color(0.782303, 0.411611, 0.388398, 0.42)
+
+[node name="CollisionBox" type="CollisionShape2D" parent="." groups=["Enemy Hurtbox"]]
 position = Vector2(1, 0)
 rotation = 1.5708
 shape = SubResource("CircleShape2D_3yqyl")
 
 [node name="invincibility" type="Timer" parent="CollisionBox"]
+one_shot = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 visibility_layer = 32
@@ -73,3 +88,6 @@ parent = NodePath("..")
 canTransitionTo = [NodePath("../idle"), NodePath(".")]
 weight = 0.5
 metadata/_custom_type_script = "uid://c6js8l6db5t4c"
+
+[connection signal="area_entered" from="Area2D" to="." method="check_collisions"]
+[connection signal="timeout" from="CollisionBox/invincibility" to="." method="_end_invincibility"]

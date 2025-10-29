@@ -17,3 +17,4 @@ player = NodePath("player")
 [node name="breakable" parent="." instance=ExtResource("4_1bvp3")]
 
 [node name="Enemy" parent="." instance=ExtResource("5_lquwl")]
+position = Vector2(425, -68)

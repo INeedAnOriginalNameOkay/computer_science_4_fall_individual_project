@@ -1,35 +1,33 @@
-class_name attack extends Area2D
+class_name attack extends hitbox
 
-@export var data: Array[hitbox]
-@export var collisionshape: CollisionShape2D
-@export var hitbox_timers: Array[Timer]
+@export var data:hitbox
+@export var area: Area2D
+@export var hitbox_duration: Timer
+@export var foreswing: Timer
 @export var backswing: float
+@export var coll: CollisionShape2D
 var saved_i: int
-var hitbox_enabled: Array[bool]
+var hitbox_enabled: bool
+
+func _ready():
+	coll.disabled = true
+	
 func enter():
-	for i in range(data.size()):
-		get_tree().create_timer(data[i].forswing)
-		#do attack things like summoning the hitbox
-		#lingering hitboxes are pretty important too
-		hitbox_timers[i].start(data[i].duration)
+	await get_tree().create_timer(data.forswing)
+	
 		
-	get_tree().create_timer(backswing)
-	return
+	await get_tree().create_timer(backswing)
 
 func physics_process(delta:float):
+	pass
 	
-	for i in range(hitbox_enabled.size()):
-		
-		saved_i = i
-		if(hitbox_enabled[i]):
-			collisionshape.disabled = false
-			var hitbox_shape = CapsuleShape2D.new()
-			hitbox_shape.radius = data[i].radius
-			hitbox_shape.height = data[i].height
-			collisionshape.shape = hitbox_shape
-			collisionshape.rotation = data[i].rotation
-		else:
-			collisionshape.disabled = true
 
 func collisions(collided): 
 	pass
+
+func _foreswing():
+	coll.disabled = false
+	hitbox_duration.start(data.duration)
+	
+func _duration_timer():
+	coll.disabled = true

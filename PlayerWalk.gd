@@ -3,6 +3,11 @@ extends walk
 func enter():
 	PlayerGlobals.jumpCount = PlayerGlobals.maxJumpCount
 	super()
+	if (Input.get_axis("ui_left", "ui_right") == -1):
+		parent.parent.animations.flip_h = true
+		
+	elif (Input.get_axis("ui_left", "ui_right") == 1):
+		parent.parent.animations.flip_h = false
 	
 	
 func process_input(event: InputEvent):
@@ -13,13 +18,13 @@ func process_input(event: InputEvent):
 	elif (Input.get_axis("ui_left", "ui_right") == 0):
 		exit(canTransitionTo[2])
 		
-	
-func process(delta:float):
-	if (Input.get_axis("ui_left", "ui_right") == -1):
+	elif (Input.get_axis("ui_left", "ui_right") == -1):
 		parent.parent.animations.flip_h = true
 		
 	elif (Input.get_axis("ui_left", "ui_right") == 1):
 		parent.parent.animations.flip_h = false
+	
+func process(delta:float):
 		
 	super(delta)
 

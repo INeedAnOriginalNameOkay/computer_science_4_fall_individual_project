@@ -1,6 +1,6 @@
 class_name launched extends State
 
-@export var launch: Vector2
+var launch: Vector2
 @export var timer: Timer
 
 var initiate_knockback: bool
@@ -17,12 +17,10 @@ func process_physics(delta:float):
 			parent.parent.velocity.x = -1*velocityx
 			_start_launch(Vector2(0-velocityx,parent.parent.velocity.y))
 			
-		if(parent.parent.velocity.x > 0):
-			parent.parent.velocity.x -= 10
 		else:
-			parent.parent.velocity.x += 10
-		fall_speed(0.5,weight)
-	
+			parent.parent.velocity.x += ( 0 - parent.parent.velocity.x ) * 0.3
+			
+		fall_speed(1,weight)
 		if(parent.parent.velocity.x == 0):
 			exit(canTransitionTo[0])
 		
@@ -32,9 +30,9 @@ func process_physics(delta:float):
 		
 func _start_launch(launching: Vector2):
 	launch = launching
-	initiate_knockback = false
+	initiate_knockback = true
 	pos = parent.parent.position
-	timer.start(sqrt( (launch.x * launch.x) + (launch.y + launch.y) )/3600 )
+	parent.parent.velocity = launch
 
 func _timer_timeout():
 	parent.parent.position = pos
