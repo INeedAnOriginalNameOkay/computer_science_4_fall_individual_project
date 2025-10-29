@@ -121,6 +121,12 @@ one_shot = true
 [node name="AttackTimer" type="Timer" parent="."]
 one_shot = true
 
+[node name="ForeswingTimer" type="Timer" parent="AttackTimer"]
+one_shot = true
+
+[node name="DurationTimer" type="Timer" parent="AttackTimer"]
+one_shot = true
+
 [node name="LaunchStunTimer" type="Timer" parent="."]
 one_shot = true
 
@@ -203,11 +209,13 @@ animation_name = "AdventurerJab"
 parent = NodePath("..")
 canTransitionTo = [NodePath("../Fall"), NodePath("../Idle")]
 
-[node name="Hitbox" parent="StateMachine/Jab" node_paths=PackedStringArray("ent", "data", "area") instance=ExtResource("2_q13i1")]
+[node name="Hitbox" parent="StateMachine/Jab" node_paths=PackedStringArray("ent", "data", "area", "hitbox_duration", "foreswing") instance=ExtResource("2_q13i1")]
 position = Vector2(31, -26)
 ent = NodePath("../../..")
 data = NodePath(".")
 area = NodePath(".")
+hitbox_duration = NodePath("../../../AttackTimer/DurationTimer")
+foreswing = NodePath("../../../AttackTimer/ForeswingTimer")
 knockback = Vector2(250, -400)
 damage = 1.0
 radius = 100.0
@@ -251,4 +259,6 @@ offset = Vector2(20, -25)
 [connection signal="timeout" from="WallSlideTimer" to="StateMachine/WallCling" method="slip_timer"]
 [connection signal="timeout" from="DashTimer" to="." method="_on_dash_timer_timeout"]
 [connection signal="timeout" from="AttackTimer" to="StateMachine/Jab" method="_end_timer"]
+[connection signal="timeout" from="AttackTimer/ForeswingTimer" to="StateMachine/Jab/Hitbox" method="_foreswing_timer"]
+[connection signal="timeout" from="AttackTimer/DurationTimer" to="StateMachine/Jab/Hitbox" method="_duration_timer"]
 [connection signal="timeout" from="LaunchStunTimer" to="StateMachine/Launched" method="_timer_timeout"]

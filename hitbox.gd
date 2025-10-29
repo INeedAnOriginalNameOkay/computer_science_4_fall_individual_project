@@ -13,10 +13,7 @@ func _ready():
 	coll.disabled = true
 	
 func enter():
-	await get_tree().create_timer(data.forswing)
-	
-		
-	await get_tree().create_timer(backswing)
+	foreswing.start(data.forswing)
 
 func physics_process(delta:float):
 	pass
@@ -25,7 +22,7 @@ func physics_process(delta:float):
 func collisions(collided): 
 	pass
 
-func _foreswing():
+func _foreswing_timer():
 	coll.disabled = false
 	hitbox_duration.start(data.duration)
 	
