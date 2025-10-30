@@ -9,5 +9,5 @@ func check_collisions(body):
 		statemach.transition(launch_state)
 		invincible = true
 		print(sqrt(abs(PlayerGlobals.launchVector.x+PlayerGlobals.launchVector.y))/50)
-		i_frame_timer.start ( sqrt(abs(PlayerGlobals.launchVector.x+PlayerGlobals.launchVector.y))/50 ) 
+		i_frame_timer.start ( sqrt(abs(PlayerGlobals.launchVector.x+PlayerGlobals.launchVector.y))/100 ) 
 		#ouchie wouchie

@@ -9,7 +9,7 @@ func enter():
 	
 func process_physics(delta:float):
 	attacks.physics_process(delta)
-
+	
 func _end_timer():
 	if(parent.parent.is_on_floor()):
 		exit(canTransitionTo[1])

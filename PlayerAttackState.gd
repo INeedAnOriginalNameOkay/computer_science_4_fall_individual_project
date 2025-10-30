@@ -8,3 +8,7 @@ func enter():
 	if(parent.parent.animations.flip_h == true):
 		PlayerGlobals.launchVector.x = 0 - PlayerGlobals.launchVector.x
 	super()
+
+func process_input(event:InputEvent):
+	if(!attack_p.coll.disabled):
+		return

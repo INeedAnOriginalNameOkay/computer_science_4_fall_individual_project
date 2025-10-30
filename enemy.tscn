@@ -26,6 +26,7 @@ animations = [{
 
 [node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("animations", "statemach", "i_frame_timer", "launch_state", "hurtbox")]
 collision_layer = 2
+collision_mask = 2
 script = ExtResource("1_4gyqm")
 animations = NodePath("AnimatedSprite2D")
 statemach = NodePath("StateMachine")

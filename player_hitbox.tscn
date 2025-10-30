@@ -4,8 +4,10 @@
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_66kmp"]
 
-[node name="Hitbox" type="Area2D" node_paths=PackedStringArray("coll") groups=["Player Hitbox"]]
+[node name="Hitbox" type="Area2D" node_paths=PackedStringArray("hitbox_duration", "foreswing_timer", "coll") groups=["Player Hitbox"]]
 script = ExtResource("1_6dqal")
+hitbox_duration = NodePath("DurationTimer")
+foreswing_timer = NodePath("ForeswingTimer")
 coll = NodePath("CollisionShape2D")
 metadata/_custom_type_script = "uid://xahpyywgksat"
 
@@ -13,3 +15,12 @@ metadata/_custom_type_script = "uid://xahpyywgksat"
 shape = SubResource("CapsuleShape2D_66kmp")
 
 [node name="Timer1" type="Timer" parent="."]
+
+[node name="ForeswingTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="DurationTimer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="ForeswingTimer" to="." method="_foreswing_timer"]
+[connection signal="timeout" from="DurationTimer" to="." method="_duration_timer"]

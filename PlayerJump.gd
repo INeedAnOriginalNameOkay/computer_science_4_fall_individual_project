@@ -7,6 +7,8 @@ func process_input(event: InputEvent):
 	if(event.is_action_released("jump")):
 		PlayerGlobals.y_velocity = 0
 		exit(canTransitionTo[0])
+	elif(Input.is_action_just_pressed("light_attack")):
+		exit(canTransitionTo[1])
 
 func exit(newState: State):
 	if(PlayerGlobals.y_velocity > 0):

@@ -3,17 +3,21 @@ class_name attack extends hitbox
 @export var data:hitbox
 @export var area: Area2D
 @export var hitbox_duration: Timer
-@export var foreswing: Timer
+@export var foreswing_timer: Timer
 @export var backswing: float
 @export var coll: CollisionShape2D
 var saved_i: int
 var hitbox_enabled: bool
 
 func _ready():
+	var hb:CapsuleShape2D = CapsuleShape2D.new()
+	hb.height = data.height
+	hb.radius = data.radius
+	coll.shape = hb
 	coll.disabled = true
 	
 func enter():
-	foreswing.start(data.forswing)
+	foreswing_timer.start(data.forswing)
 
 func physics_process(delta:float):
 	pass

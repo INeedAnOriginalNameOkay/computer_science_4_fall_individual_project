@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://ybl0qgtjjtv7"]
+[gd_scene load_steps=24 format=3 uid="uid://ybl0qgtjjtv7"]
 
 [ext_resource type="Script" uid="uid://dsq18iuv8k63a" path="res://player.gd" id="1_u1c27"]
 [ext_resource type="Texture2D" uid="uid://ca1c3j07jybu4" path="res://art/player/Adventurer/Idle/AdventurerIdle.png" id="2_2hs0m"]
@@ -9,17 +9,13 @@
 [ext_resource type="Texture2D" uid="uid://dnju2w8aic165" path="res://art/player/Adventurer/Jab/AdventurerJab5.png" id="6_b26j0"]
 [ext_resource type="Script" uid="uid://bvvkmh6ewkfpx" path="res://PlayerStateMachine.gd" id="7_1jxqw"]
 [ext_resource type="Texture2D" uid="uid://sv1tf1dqci2n" path="res://art/player/Adventurer/Walk/AdventurerWalk0.png" id="7_606se"]
-[ext_resource type="Texture2D" uid="uid://ca3vscfyn113w" path="res://art/player/Adventurer/Nair/AdventurerNair0.png" id="7_dx0e4"]
 [ext_resource type="Script" uid="uid://dxkei1l26m0tu" path="res://PlayerIdle.gd" id="8_dw050"]
-[ext_resource type="Texture2D" uid="uid://dffujkqoq1068" path="res://art/player/Adventurer/Nair/AdventurerNair1.png" id="8_jm5j8"]
 [ext_resource type="Texture2D" uid="uid://ccymivk1uoesm" path="res://art/player/Adventurer/Walk/AdventurerWalk1.png" id="8_u1c27"]
-[ext_resource type="Texture2D" uid="uid://de6ksta5l0e0g" path="res://art/player/Adventurer/Nair/AdventurerNair2.png" id="9_7hik5"]
 [ext_resource type="Script" uid="uid://f56q02hivqub" path="res://PlayerJump.gd" id="9_b26j0"]
 [ext_resource type="Script" uid="uid://bxnw4qeweflh8" path="res://PlayerWalk.gd" id="9_nvl01"]
 [ext_resource type="Texture2D" uid="uid://dh6wvuctrp485" path="res://art/player/Adventurer/Walk/AdventurerWalk2.png" id="9_op7ga"]
 [ext_resource type="Script" uid="uid://dp1fe6jmke2op" path="res://PlayerFall.gd" id="10_n7ghd"]
 [ext_resource type="Texture2D" uid="uid://cuwwrvb1icyvy" path="res://art/player/Adventurer/Walk/AdventurerWalk3.png" id="10_q13i1"]
-[ext_resource type="Texture2D" uid="uid://cbwmssqfu7jlk" path="res://art/player/Adventurer/Nair/AdventurerNair3.png" id="10_qtqh7"]
 [ext_resource type="Script" uid="uid://c8xojrdxgkup5" path="res://PlayerWallCling.gd" id="16_u1c27"]
 [ext_resource type="Script" uid="uid://bdy7yhdduaali" path="res://PlayerLaunched.gd" id="17_op7ga"]
 [ext_resource type="Script" uid="uid://dkp4g1amp07l3" path="res://PlayerJab.gd" id="18_pylmc"]
@@ -53,23 +49,6 @@ animations = [{
 }],
 "loop": false,
 "name": &"AdventurerJab",
-"speed": 60.0
-}, {
-"frames": [{
-"duration": 3.0,
-"texture": ExtResource("7_dx0e4")
-}, {
-"duration": 3.0,
-"texture": ExtResource("8_jm5j8")
-}, {
-"duration": 3.0,
-"texture": ExtResource("9_7hik5")
-}, {
-"duration": 3.0,
-"texture": ExtResource("10_qtqh7")
-}],
-"loop": true,
-"name": &"AdventurerNair",
 "speed": 60.0
 }, {
 "frames": [{
@@ -118,7 +97,7 @@ debug_color = Color(0.939871, 0.168677, 0.454205, 0.42)
 visibility_layer = 16
 position = Vector2(-5.4, -16)
 sprite_frames = SubResource("SpriteFrames_onrkg")
-animation = &"AdventurerJab"
+animation = &"AdventurerIdle"
 
 [node name="CollisionBox" type="CollisionShape2D" parent="." groups=["Player Hurtbox"]]
 position = Vector2(-5, -13)
@@ -138,6 +117,15 @@ one_shot = true
 
 [node name="DashTimer" type="Timer" parent="."]
 process_callback = 0
+one_shot = true
+
+[node name="AttackTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="ForeswingTimer" type="Timer" parent="AttackTimer"]
+one_shot = true
+
+[node name="DurationTimer" type="Timer" parent="AttackTimer"]
 one_shot = true
 
 [node name="LaunchStunTimer" type="Timer" parent="."]
@@ -174,7 +162,7 @@ parent = NodePath("..")
 script = ExtResource("8_dw050")
 animation_name = "AdventurerIdle"
 parent = NodePath("..")
-canTransitionTo = [NodePath("../Jump"), NodePath("../Fall"), NodePath("../Walk"), NodePath("../Jab"), NodePath("../Nair")]
+canTransitionTo = [NodePath("../Jump"), NodePath("../Fall"), NodePath("../Walk"), NodePath("../Jab")]
 
 [node name="Walk" type="Node" parent="StateMachine" node_paths=PackedStringArray("parent", "canTransitionTo")]
 script = ExtResource("9_nvl01")
@@ -217,26 +205,25 @@ canTransitionTo = [NodePath("../Fall")]
 [node name="Jab" type="Node" parent="StateMachine" node_paths=PackedStringArray("attack_p", "timer", "parent", "canTransitionTo")]
 script = ExtResource("18_pylmc")
 attack_p = NodePath("Hitbox")
-timer = NodePath("AttackTimer")
+timer = NodePath("../../AttackTimer")
 animation_name = "AdventurerJab"
 parent = NodePath("..")
 canTransitionTo = [NodePath("../Fall"), NodePath("../Idle"), NodePath("../Nair")]
 
-[node name="Hitbox" parent="StateMachine/Jab" node_paths=PackedStringArray("ent", "data", "area") instance=ExtResource("2_q13i1")]
+[node name="Hitbox" parent="StateMachine/Jab" node_paths=PackedStringArray("ent", "data", "area", "hitbox_duration", "foreswing") instance=ExtResource("2_q13i1")]
 position = Vector2(31, -26)
 ent = NodePath("../../..")
 data = NodePath(".")
 area = NodePath(".")
+hitbox_duration = NodePath("../../../AttackTimer/DurationTimer")
+foreswing = NodePath("../../../AttackTimer/ForeswingTimer")
 knockback = Vector2(250, -400)
-damage = 3.0
+damage = 1.0
 radius = 10.0
 height = 30.0
 forswing = 0.067
 duration = 0.2
 offset = Vector2(20, -25)
-
-[node name="AttackTimer" type="Timer" parent="StateMachine/Jab"]
-one_shot = true
 
 [node name="Filt" type="Node" parent="StateMachine"]
 
@@ -247,26 +234,25 @@ one_shot = true
 [node name="Nair" type="Node" parent="StateMachine" node_paths=PackedStringArray("attack_p", "timer", "parent", "canTransitionTo")]
 script = ExtResource("20_pbfsw")
 attack_p = NodePath("Hitbox")
-timer = NodePath("Hitbox/AttackTimer")
+timer = NodePath("../../AttackTimer")
 animation_name = "AdventurerNair"
 parent = NodePath("..")
 canTransitionTo = [NodePath("../Fall"), NodePath("../Idle")]
 
-[node name="Hitbox" parent="StateMachine/Nair" node_paths=PackedStringArray("ent", "data", "area") instance=ExtResource("2_q13i1")]
+[node name="Hitbox" parent="StateMachine/Nair" node_paths=PackedStringArray("ent", "data", "area", "hitbox_duration", "foreswing") instance=ExtResource("2_q13i1")]
 position = Vector2(3, -23)
 ent = NodePath("../../..")
 data = NodePath(".")
 area = NodePath(".")
-knockback = Vector2(300, -600)
-damage = 4.0
+hitbox_duration = NodePath("../../../AttackTimer/DurationTimer")
+foreswing = NodePath("../../../AttackTimer/ForeswingTimer")
+knockback = Vector2(250, -400)
+damage = 1.0
 radius = 40.0
 height = 40.0
-forswing = 0.01
-duration = 0.19
+forswing = 0.067
+duration = 0.2
 offset = Vector2(-20, -25)
-
-[node name="AttackTimer" type="Timer" parent="StateMachine/Nair/Hitbox"]
-one_shot = true
 
 [node name="Fair" type="Node" parent="StateMachine"]
 
@@ -294,6 +280,7 @@ one_shot = true
 [connection signal="timeout" from="CanWallClingTimer" to="StateMachine/Jump" method="wall_cling_timer"]
 [connection signal="timeout" from="WallSlideTimer" to="StateMachine/WallCling" method="slip_timer"]
 [connection signal="timeout" from="DashTimer" to="." method="_on_dash_timer_timeout"]
+[connection signal="timeout" from="AttackTimer" to="StateMachine/Jab" method="_end_timer"]
+[connection signal="timeout" from="AttackTimer/ForeswingTimer" to="StateMachine/Jab/Hitbox" method="_foreswing_timer"]
+[connection signal="timeout" from="AttackTimer/DurationTimer" to="StateMachine/Jab/Hitbox" method="_duration_timer"]
 [connection signal="timeout" from="LaunchStunTimer" to="StateMachine/Launched" method="_timer_timeout"]
-[connection signal="timeout" from="StateMachine/Jab/AttackTimer" to="StateMachine/Jab" method="_end_timer"]
-[connection signal="timeout" from="StateMachine/Nair/Hitbox/AttackTimer" to="StateMachine/Nair" method="_end_timer"]

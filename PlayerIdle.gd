@@ -9,11 +9,15 @@ func enter():
 
 func process_input(event: InputEvent):
 	if(Input.is_action_just_pressed("jump") && PlayerGlobals.jumpCount > 0):
-		exit(canTransitionTo[0])
 		PlayerGlobals.jumpCount -= 1
-	if(Input.is_action_just_pressed("light_attack")):
+		if(Input.is_action_just_pressed("light_attack")):
+			exit(canTransitionTo[4])
+			return
+		exit(canTransitionTo[0])
+		
+	elif(Input.is_action_just_pressed("light_attack")):
 		exit(canTransitionTo[3])
-	if(Input.get_axis("ui_left", "ui_right") != 0):
+	elif(Input.get_axis("ui_left", "ui_right") != 0):
 		exit(canTransitionTo[2])
 		
 func process(delta: float):
