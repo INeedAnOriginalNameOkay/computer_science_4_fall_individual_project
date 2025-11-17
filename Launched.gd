@@ -21,7 +21,7 @@ func process_physics(delta:float):
 			parent.parent.velocity.x += ( 0 - parent.parent.velocity.x ) * 0.3
 			
 		fall_speed(1,weight)
-		if(parent.parent.velocity.x == 0):
+		if parent.parent.velocity.y > 1:
 			exit(canTransitionTo[0])
 		
 		velocityx = parent.parent.velocity.x

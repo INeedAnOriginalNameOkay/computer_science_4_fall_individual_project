@@ -8,3 +8,5 @@ func process_input(event:InputEvent):
 	if(Input.is_action_just_pressed("jump") && Input.is_action_just_pressed("light_attack")):
 		PlayerGlobals.y_velocity = PlayerGlobals.jumpPower
 		exit(canTransitionTo[2])
+	elif Input.is_action_just_pressed("heavy_attack"):
+		exit(canTransitionTo[3])

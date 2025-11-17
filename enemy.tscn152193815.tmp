@@ -184,7 +184,6 @@ one_shot = true
 
 [connection signal="area_entered" from="Area2D" to="." method="check_collisions"]
 [connection signal="timeout" from="CollisionBox/invincibility" to="." method="_end_invincibility"]
-[connection signal="timeout" from="SuperTimer" to="StateMachine/Ultimate" method="_end_ult"]
 [connection signal="timeout" from="TBA Timer" to="." method="TBA"]
 [connection signal="timeout" from="StateMachine/Jab/AttackTimer" to="StateMachine/Jab" method="_end_timer"]
 [connection signal="timeout" from="StateMachine/Nair/AttackTimer" to="StateMachine/Nair" method="_end_timer"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://ybl0qgtjjtv7"]
+[gd_scene load_steps=33 format=3 uid="uid://ybl0qgtjjtv7"]
 
 [ext_resource type="Script" uid="uid://dsq18iuv8k63a" path="res://player.gd" id="1_u1c27"]
 [ext_resource type="Texture2D" uid="uid://ca1c3j07jybu4" path="res://art/player/Adventurer/Idle/AdventurerIdle.png" id="2_2hs0m"]
@@ -24,6 +24,10 @@
 [ext_resource type="Script" uid="uid://bdy7yhdduaali" path="res://PlayerLaunched.gd" id="17_op7ga"]
 [ext_resource type="Script" uid="uid://dkp4g1amp07l3" path="res://PlayerJab.gd" id="18_pylmc"]
 [ext_resource type="Script" uid="uid://yswjb37v8jh0" path="res://PlayerNair.gd" id="20_pbfsw"]
+[ext_resource type="Script" uid="uid://3cu8fjyswg3f" path="res://PlayerDilt.gd" id="24_7hik5"]
+[ext_resource type="Script" uid="uid://bqlxg7xl5pk2j" path="res://PlayerFmash.gd" id="25_jm5j8"]
+[ext_resource type="Script" uid="uid://dushx2uak6klw" path="res://PlayerSpecial.gd" id="27_2wuci"]
+[ext_resource type="PackedScene" uid="uid://cpecmkdoemxst" path="res://projectile.tscn" id="28_iruf7"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pbfsw"]
 radius = 11.0
@@ -39,16 +43,16 @@ animations = [{
 "speed": 60.0
 }, {
 "frames": [{
-"duration": 4.0,
+"duration": 3.0,
 "texture": ExtResource("3_2hs0m")
 }, {
-"duration": 4.0,
+"duration": 3.0,
 "texture": ExtResource("4_1jxqw")
 }, {
-"duration": 4.0,
+"duration": 3.0,
 "texture": ExtResource("5_dw050")
 }, {
-"duration": 4.0,
+"duration": 3.0,
 "texture": ExtResource("6_b26j0")
 }],
 "loop": false,
@@ -93,8 +97,10 @@ animations = [{
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_op7ga"]
 height = 26.0
 
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_j5n4i"]
+
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("animations", "statemach", "wall_cling_timer", "i_frame_timer", "launch_state", "hurtbox")]
-position = Vector2(11, 0)
+position = Vector2(11, 25)
 scale = Vector2(2, 2)
 floor_constant_speed = true
 script = ExtResource("1_u1c27")
@@ -118,7 +124,7 @@ debug_color = Color(0.939871, 0.168677, 0.454205, 0.42)
 visibility_layer = 16
 position = Vector2(-5.4, -16)
 sprite_frames = SubResource("SpriteFrames_onrkg")
-animation = &"AdventurerJab"
+animation = &"AdventurerIdle"
 
 [node name="CollisionBox" type="CollisionShape2D" parent="." groups=["Player Hurtbox"]]
 position = Vector2(-5, -13)
@@ -174,7 +180,7 @@ parent = NodePath("..")
 script = ExtResource("8_dw050")
 animation_name = "AdventurerIdle"
 parent = NodePath("..")
-canTransitionTo = [NodePath("../Jump"), NodePath("../Fall"), NodePath("../Walk"), NodePath("../Jab"), NodePath("../Nair")]
+canTransitionTo = [NodePath("../Jump"), NodePath("../Fall"), NodePath("../Walk"), NodePath("../Jab"), NodePath("../Nair"), NodePath("../Fmash"), NodePath("../Dilt")]
 
 [node name="Walk" type="Node" parent="StateMachine" node_paths=PackedStringArray("parent", "canTransitionTo")]
 script = ExtResource("9_nvl01")
@@ -220,19 +226,19 @@ attack_p = NodePath("Hitbox")
 timer = NodePath("AttackTimer")
 animation_name = "AdventurerJab"
 parent = NodePath("..")
-canTransitionTo = [NodePath("../Fall"), NodePath("../Idle"), NodePath("../Nair")]
+canTransitionTo = [NodePath("../Fall"), NodePath("../Idle"), NodePath("../Nair"), NodePath("../Fmash")]
 
-[node name="Hitbox" parent="StateMachine/Jab" node_paths=PackedStringArray("ent", "data", "area") instance=ExtResource("2_q13i1")]
-position = Vector2(31, -26)
+[node name="Hitbox" parent="StateMachine/Jab" node_paths=PackedStringArray("ent", "data", "area") groups=["Player Hitbox"] instance=ExtResource("2_q13i1")]
+position = Vector2(31, -1)
 ent = NodePath("../../..")
 data = NodePath(".")
 area = NodePath(".")
-knockback = Vector2(250, -400)
+knockback = Vector2(500, -400)
 damage = 3.0
 radius = 10.0
 height = 30.0
-forswing = 0.067
-duration = 0.2
+forswing = 0.04
+duration = 0.16
 offset = Vector2(20, -25)
 
 [node name="AttackTimer" type="Timer" parent="StateMachine/Jab"]
@@ -240,32 +246,54 @@ one_shot = true
 
 [node name="Filt" type="Node" parent="StateMachine"]
 
-[node name="Dilt" type="Node" parent="StateMachine"]
+[node name="Dilt" type="Node" parent="StateMachine" node_paths=PackedStringArray("attack_p", "timer", "parent", "canTransitionTo")]
+script = ExtResource("24_7hik5")
+attack_p = NodePath("Hitbox")
+timer = NodePath("AttackTimer")
+animation_name = "AdventurerJab"
+parent = NodePath("..")
+canTransitionTo = [NodePath("../Fall"), NodePath("../Idle")]
+
+[node name="Hitbox" parent="StateMachine/Dilt" node_paths=PackedStringArray("ent", "data", "area") groups=["Player Hitbox"] instance=ExtResource("2_q13i1")]
+position = Vector2(3, 2)
+ent = NodePath("../../..")
+data = NodePath(".")
+area = NodePath(".")
+knockback = Vector2(-500, -400)
+damage = 4.0
+radius = 30.0
+height = 10.0
+forswing = 0.06
+duration = 0.06
+offset = Vector2(35, 0)
+
+[node name="AttackTimer" type="Timer" parent="StateMachine/Dilt"]
+one_shot = true
 
 [node name="Uilt" type="Node" parent="StateMachine"]
 
 [node name="Nair" type="Node" parent="StateMachine" node_paths=PackedStringArray("attack_p", "timer", "parent", "canTransitionTo")]
 script = ExtResource("20_pbfsw")
 attack_p = NodePath("Hitbox")
-timer = NodePath("Hitbox/AttackTimer")
+timer = NodePath("AttackTimer")
 animation_name = "AdventurerNair"
 parent = NodePath("..")
 canTransitionTo = [NodePath("../Fall"), NodePath("../Idle")]
 
-[node name="Hitbox" parent="StateMachine/Nair" node_paths=PackedStringArray("ent", "data", "area") instance=ExtResource("2_q13i1")]
-position = Vector2(3, -23)
+[node name="Hitbox" parent="StateMachine/Nair" node_paths=PackedStringArray("ent", "data", "area") groups=["Player Hitbox"] instance=ExtResource("2_q13i1")]
+position = Vector2(3, 2)
 ent = NodePath("../../..")
 data = NodePath(".")
 area = NodePath(".")
-knockback = Vector2(300, -600)
-damage = 4.0
-radius = 40.0
-height = 40.0
+knockback = Vector2(700, -600)
+damage = 2.0
+radius = 60.0
+height = 60.0
 forswing = 0.01
 duration = 0.19
-offset = Vector2(-20, -25)
+offset = Vector2(0, -25)
 
-[node name="AttackTimer" type="Timer" parent="StateMachine/Nair/Hitbox"]
+[node name="AttackTimer" type="Timer" parent="StateMachine/Nair"]
 one_shot = true
 
 [node name="Fair" type="Node" parent="StateMachine"]
@@ -276,13 +304,46 @@ one_shot = true
 
 [node name="Bair" type="Node" parent="StateMachine"]
 
-[node name="Fmash" type="Node" parent="StateMachine"]
+[node name="Fmash" type="Node" parent="StateMachine" node_paths=PackedStringArray("attack_p", "timer", "parent", "canTransitionTo")]
+script = ExtResource("25_jm5j8")
+attack_p = NodePath("Hitbox")
+timer = NodePath("AttackTimer")
+animation_name = "AdventurerJab"
+parent = NodePath("..")
+canTransitionTo = [NodePath("../Fall"), NodePath("../Idle")]
+
+[node name="Hitbox" parent="StateMachine/Fmash" node_paths=PackedStringArray("ent", "data", "area") groups=["Player Hitbox"] instance=ExtResource("2_q13i1")]
+position = Vector2(31, -1)
+ent = NodePath("../../..")
+data = NodePath(".")
+area = NodePath(".")
+knockback = Vector2(3000, -800)
+damage = 15.0
+radius = 45.0
+height = 45.0
+forswing = 0.067
+duration = 0.15
+offset = Vector2(30, -25)
+
+[node name="AttackTimer" type="Timer" parent="StateMachine/Fmash"]
+one_shot = true
 
 [node name="Umash" type="Node" parent="StateMachine"]
 
 [node name="Dmash" type="Node" parent="StateMachine"]
 
-[node name="Special" type="Node" parent="StateMachine"]
+[node name="Special" type="Node" parent="StateMachine" node_paths=PackedStringArray("canTransitionTo")]
+script = ExtResource("27_2wuci")
+animation_name = "AdventurerJab"
+canTransitionTo = [NodePath("../Fall"), NodePath("../Idle")]
+metadata/_custom_type_script = "uid://dbtgwmj4adoe0"
+
+[node name="Projectile" parent="StateMachine/Special" groups=["Player Hurtbox"] instance=ExtResource("28_iruf7")]
+collision_layer = 4
+collision_mask = 4
+physics_material_override = SubResource("PhysicsMaterial_j5n4i")
+gravity_scale = 0.0
+lock_rotation = true
 
 [node name="Uustom" type="Node" parent="StateMachine"]
 
@@ -291,9 +352,12 @@ one_shot = true
 [node name="Ultimate" type="Node" parent="StateMachine"]
 
 [connection signal="area_entered" from="Area2D" to="." method="check_collisions"]
+[connection signal="timeout" from="CollisionBox/invincibility" to="." method="_end_invincibility"]
 [connection signal="timeout" from="CanWallClingTimer" to="StateMachine/Jump" method="wall_cling_timer"]
 [connection signal="timeout" from="WallSlideTimer" to="StateMachine/WallCling" method="slip_timer"]
 [connection signal="timeout" from="DashTimer" to="." method="_on_dash_timer_timeout"]
 [connection signal="timeout" from="LaunchStunTimer" to="StateMachine/Launched" method="_timer_timeout"]
 [connection signal="timeout" from="StateMachine/Jab/AttackTimer" to="StateMachine/Jab" method="_end_timer"]
-[connection signal="timeout" from="StateMachine/Nair/Hitbox/AttackTimer" to="StateMachine/Nair" method="_end_timer"]
+[connection signal="timeout" from="StateMachine/Dilt/AttackTimer" to="StateMachine/Nair" method="_end_timer"]
+[connection signal="timeout" from="StateMachine/Nair/AttackTimer" to="StateMachine/Nair" method="_end_timer"]
+[connection signal="timeout" from="StateMachine/Fmash/AttackTimer" to="StateMachine/Jab" method="_end_timer"]

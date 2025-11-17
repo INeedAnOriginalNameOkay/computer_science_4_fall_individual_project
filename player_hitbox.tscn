@@ -4,7 +4,7 @@
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_66kmp"]
 
-[node name="Hitbox" type="Area2D" node_paths=PackedStringArray("hitbox_duration", "foreswing_timer", "coll") groups=["Player Hitbox"]]
+[node name="Hitbox" type="Area2D" node_paths=PackedStringArray("hitbox_duration", "foreswing_timer", "coll")]
 script = ExtResource("1_6dqal")
 hitbox_duration = NodePath("DurationTimer")
 foreswing_timer = NodePath("ForeswingTimer")

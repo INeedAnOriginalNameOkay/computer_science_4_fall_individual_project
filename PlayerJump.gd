@@ -22,4 +22,8 @@ func fall_speed(modifier: float, weight: float):
 func horizontal_speed(modifier: float):
 	PlayerGlobals.horizontal_speed(modifier)
 	parent.parent.velocity.x = PlayerGlobals.x_velocity
-	
+	if(EnemyStuff.ult):
+		if(parent.parent.position.x > 576):
+			parent.parent.velocity.x -= 175
+		elif(parent.parent.position.x < 576):
+			parent.parent.velocity.x += 175

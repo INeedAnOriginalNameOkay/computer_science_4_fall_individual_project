@@ -79,7 +79,7 @@ parent = NodePath("..")
 script = ExtResource("4_3yqyl")
 animation_name = "default"
 parent = NodePath("..")
-canTransitionTo = [NodePath("../launched"), NodePath("../Fall"), NodePath("../walk"), NodePath("../Jab"), NodePath("../Jab"), NodePath("../Nair"), NodePath("../Nair"), NodePath("../Ultimate")]
+canTransitionTo = [NodePath("../launched"), NodePath("../Fall"), NodePath("../walk"), NodePath("../Jab"), NodePath("../Jab"), NodePath("../Nair"), NodePath("../Nair"), NodePath("../Jab")]
 weight = 0.5
 metadata/_custom_type_script = "uid://57scinuvn886"
 
@@ -172,19 +172,18 @@ position = Vector2(3, 2)
 ent = NodePath("../../..")
 data = NodePath(".")
 area = NodePath(".")
+backswing = 0.2
 knockback = Vector2(0, -400)
-damage = 10.0
+damage = 5.0
 radius = 80.0
 height = 80.0
-forswing = 0.05
-duration = 0.05
+duration = 0.01
 
 [node name="AttackTimer" type="Timer" parent="StateMachine/Ultimate"]
 one_shot = true
 
 [connection signal="area_entered" from="Area2D" to="." method="check_collisions"]
 [connection signal="timeout" from="CollisionBox/invincibility" to="." method="_end_invincibility"]
-[connection signal="timeout" from="SuperTimer" to="StateMachine/Ultimate" method="_end_ult"]
 [connection signal="timeout" from="TBA Timer" to="." method="TBA"]
 [connection signal="timeout" from="StateMachine/Jab/AttackTimer" to="StateMachine/Jab" method="_end_timer"]
 [connection signal="timeout" from="StateMachine/Nair/AttackTimer" to="StateMachine/Nair" method="_end_timer"]

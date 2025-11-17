@@ -1,6 +1,6 @@
 class_name AttackState extends State
 
-var attacks: attack
+@export var attacks: attack
 @export var timer: Timer
 func enter():
 	super()

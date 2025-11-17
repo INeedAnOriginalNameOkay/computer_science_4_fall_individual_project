@@ -18,12 +18,16 @@ config/icon="res://icon.svg"
 [autoload]
 
 PlayerGlobals="*res://PlayerGlobals.gd"
+EnemyStuff="*res://EnemyStuff.gd"
 
 [global_group]
 
 "Enemy Hurtbox"="Enemy Hurt Box"
 "Player Hitbox"="Player Hitbox"
 "Player Hurtbox"="Blayer Hurt Box"
+"Enemy Hitbox"="Ouch"
+SafeBox="Where you won't be dead (minus HP)"
+Projectile="Subcatagory for hitboxes"
 
 [input]
 

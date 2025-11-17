@@ -165,6 +165,7 @@ timer = NodePath("AttackTimer")
 animation_name = "default"
 parent = NodePath("..")
 canTransitionTo = [NodePath("../Fall"), NodePath("../idle")]
+weight = null
 metadata/_custom_type_script = "uid://bfkp52swsh868"
 
 [node name="Hitbox" parent="StateMachine/Ultimate" node_paths=PackedStringArray("ent", "data", "area") groups=["Enemy Hitbox"] instance=ExtResource("9_dxifv")]
@@ -184,7 +185,6 @@ one_shot = true
 
 [connection signal="area_entered" from="Area2D" to="." method="check_collisions"]
 [connection signal="timeout" from="CollisionBox/invincibility" to="." method="_end_invincibility"]
-[connection signal="timeout" from="SuperTimer" to="StateMachine/Ultimate" method="_end_ult"]
 [connection signal="timeout" from="TBA Timer" to="." method="TBA"]
 [connection signal="timeout" from="StateMachine/Jab/AttackTimer" to="StateMachine/Jab" method="_end_timer"]
 [connection signal="timeout" from="StateMachine/Nair/AttackTimer" to="StateMachine/Nair" method="_end_timer"]

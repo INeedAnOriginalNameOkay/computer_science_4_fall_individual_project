@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://ybl0qgtjjtv7" path="res://player.tscn" id="1_0xm2m"]
 [ext_resource type="Script" uid="uid://dasa8p0fplepg" path="res://main.gd" id="1_h2yge"]
 [ext_resource type="PackedScene" uid="uid://urmmnabgixtj" path="res://temp_floor.tscn" id="2_h2yge"]
-[ext_resource type="PackedScene" uid="uid://duddd3xa0ae5c" path="res://breakable.tscn" id="4_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://dxhyidhciqeib" path="res://ui.tscn" id="5_7mycd"]
 [ext_resource type="PackedScene" uid="uid://b4fg52gdj0sbu" path="res://enemy.tscn" id="5_lquwl"]
 
 [node name="Main" type="Node2D" node_paths=PackedStringArray("player")]
@@ -11,10 +11,16 @@ script = ExtResource("1_h2yge")
 player = NodePath("player")
 
 [node name="tempFloor" parent="." instance=ExtResource("2_h2yge")]
+position = Vector2(-3, 565)
 
 [node name="player" parent="." instance=ExtResource("1_0xm2m")]
 
-[node name="breakable" parent="." instance=ExtResource("4_1bvp3")]
-
 [node name="Enemy" parent="." instance=ExtResource("5_lquwl")]
 position = Vector2(425, -68)
+
+[node name="Control" parent="." instance=ExtResource("5_7mycd")]
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+grow_horizontal = 1
+grow_vertical = 1

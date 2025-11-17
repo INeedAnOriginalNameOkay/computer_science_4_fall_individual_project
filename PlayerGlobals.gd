@@ -11,6 +11,9 @@ var jumpCount: int = maxJumpCount #amount of jumps done in onne "gigajump"
 var launchVector: Vector2 = Vector2(0,0)
 var y_velocity: float
 var x_velocity: float
+var pos: Vector2
+var hp: float
+var dmg: float
 
 func fall_speed(modifier: float, weight: float): 
 	y_velocity += gravity *  PlayerGlobals.weight * modifier
