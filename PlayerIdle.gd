@@ -23,6 +23,8 @@ func process_input(event: InputEvent):
 			exit(canTransitionTo[3])
 	elif(Input.is_action_just_pressed("heavy_attack")):
 		exit(canTransitionTo[5])
+	elif(Input.is_action_just_pressed("special")):
+		exit(canTransitionTo[7])
 	
 func process_physics(delta:float):
 	horizontal_speed(1)

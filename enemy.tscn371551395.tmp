@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://b4fg52gdj0sbu"]
+[gd_scene load_steps=16 format=3 uid="uid://b4fg52gdj0sbu"]
 
 [ext_resource type="Script" uid="uid://cwilynpmggvll" path="res://enemy.gd" id="1_4gyqm"]
 [ext_resource type="Texture2D" uid="uid://b1keijqqaxfhy" path="res://art/TempEnemy.png" id="1_7k104"]
@@ -12,7 +12,6 @@
 [ext_resource type="Script" uid="uid://cp2lea0vssb3p" path="res://EnemyNair.gd" id="10_dxifv"]
 [ext_resource type="Script" uid="uid://dxdc2nbqedadq" path="res://EnemyUltimate.gd" id="11_pwjut"]
 [ext_resource type="PackedScene" uid="uid://cpecmkdoemxst" path="res://projectile.tscn" id="12_n0g06"]
-[ext_resource type="Script" uid="uid://x5xy2wg7bl24" path="res://EnemyUmash.gd" id="13_ar8e5"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_wujgv"]
 radius = 34.0
@@ -185,10 +184,6 @@ duration = 0.05
 one_shot = true
 
 [node name="Projectile" parent="StateMachine/Ultimate" instance=ExtResource("12_n0g06")]
-
-[node name="Umash" type="Node" parent="StateMachine"]
-script = ExtResource("13_ar8e5")
-metadata/_custom_type_script = "uid://bfkp52swsh868"
 
 [connection signal="area_entered" from="Area2D" to="." method="check_collisions"]
 [connection signal="timeout" from="CollisionBox/invincibility" to="." method="_end_invincibility"]

@@ -1,6 +1,7 @@
 extends AttackState
 
 @export var ultimate: Timer
+@export var projectile: PackedScene
 var inUlt: bool
 func enter():
 	super()
@@ -16,6 +17,8 @@ func process_physics(delta:float):
 	parent.parent.position.x += (576 - parent.parent.position.x)*0.1
 	
 func _end_timer():
+	if(randi_range(1,5) == 1):
+		print("pretend there is a projectile here")
 	if inUlt:
 		attacks.enter()
 		timer.start(attacks.data.forswing + attacks.data.duration + attacks.backswing)
