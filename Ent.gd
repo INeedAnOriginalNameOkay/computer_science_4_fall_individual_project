@@ -31,4 +31,5 @@ func check_collisions(body):
 	pass
 
 func _end_invincibility():
+	print("banan")
 	invincible = false

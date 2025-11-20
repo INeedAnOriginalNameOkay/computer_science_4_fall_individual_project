@@ -12,7 +12,7 @@ func process_physics(delta:float):
 	else:
 		parent.parent.animations.flip_h = true
 		
-	if(parent.parent.position.distance_to(PlayerGlobals.pos) > 90):
+	if(parent.parent.position.distance_to(PlayerGlobals.pos) > 100):
 		exit(canTransitionTo[2])
 	elif (parent.parent as enemy ).canAttack:
 		EnemyStuff.combo = randi_range(1,5)

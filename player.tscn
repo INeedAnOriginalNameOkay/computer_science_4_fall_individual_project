@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://ybl0qgtjjtv7"]
+[gd_scene load_steps=32 format=3 uid="uid://ybl0qgtjjtv7"]
 
 [ext_resource type="Script" uid="uid://dsq18iuv8k63a" path="res://player.gd" id="1_u1c27"]
 [ext_resource type="Texture2D" uid="uid://ca1c3j07jybu4" path="res://art/player/Adventurer/Idle/AdventurerIdle.png" id="2_2hs0m"]
@@ -97,8 +97,6 @@ animations = [{
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_op7ga"]
 height = 26.0
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_j5n4i"]
-
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("animations", "statemach", "wall_cling_timer", "i_frame_timer", "launch_state", "hurtbox")]
 position = Vector2(11, 25)
 scale = Vector2(2, 2)
@@ -131,6 +129,7 @@ position = Vector2(-5, -13)
 shape = SubResource("CapsuleShape2D_op7ga")
 
 [node name="invincibility" type="Timer" parent="CollisionBox"]
+one_shot = true
 
 [node name="CanWallClingTimer" type="Timer" parent="."]
 process_callback = 0
@@ -341,13 +340,6 @@ parent = NodePath("..")
 canTransitionTo = [NodePath("../Fall"), NodePath("../Idle")]
 metadata/_custom_type_script = "uid://dbtgwmj4adoe0"
 
-[node name="Projectile" parent="StateMachine/Special" groups=["Player Hurtbox"] instance=ExtResource("28_iruf7")]
-collision_layer = 4
-collision_mask = 4
-physics_material_override = SubResource("PhysicsMaterial_j5n4i")
-gravity_scale = 0.0
-lock_rotation = true
-
 [node name="AttackTimer" type="Timer" parent="StateMachine/Special"]
 one_shot = true
 
@@ -367,4 +359,4 @@ one_shot = true
 [connection signal="timeout" from="StateMachine/Dilt/AttackTimer" to="StateMachine/Nair" method="_end_timer"]
 [connection signal="timeout" from="StateMachine/Nair/AttackTimer" to="StateMachine/Nair" method="_end_timer"]
 [connection signal="timeout" from="StateMachine/Fmash/AttackTimer" to="StateMachine/Jab" method="_end_timer"]
-[connection signal="timeout" from="StateMachine/Special/AttackTimer" to="StateMachine/Jab" method="_end_timer"]
+[connection signal="timeout" from="StateMachine/Special/AttackTimer" to="StateMachine/Special" method="_end_timer"]

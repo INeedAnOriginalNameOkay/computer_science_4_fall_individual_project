@@ -18,7 +18,8 @@ animations = [{
 radius = 17.0
 height = 34.0
 
-[node name="Projectile" type="RigidBody2D" groups=["Projectile"]]
+[node name="PlayerProjectile" type="RigidBody2D" groups=["Player Hitbox", "Projectile"]]
+gravity_scale = 0.0
 script = ExtResource("1_a85iw")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -26,5 +27,12 @@ position = Vector2(9, 10)
 scale = Vector2(0.15625, 0.164815)
 sprite_frames = SubResource("SpriteFrames_akgne")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=["Projectile"]]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=["Player Hitbox", "Projectile"]]
 shape = SubResource("CapsuleShape2D_a85iw")
+
+[node name="Area2D" type="Area2D" parent="." groups=["Player Hitbox", "Projectile"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" groups=["Player Hitbox", "Projectile"]]
+shape = SubResource("CapsuleShape2D_a85iw")
+
+[connection signal="area_entered" from="Area2D" to="." method="touching"]

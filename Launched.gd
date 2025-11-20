@@ -5,7 +5,7 @@ var launch: Vector2
 
 var initiate_knockback: bool
 var pos: Vector2
-var velocityx
+var velocityx: float
 
 func enter():
 	_start_launch(launch)
