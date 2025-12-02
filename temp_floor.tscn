@@ -16,8 +16,22 @@ script = ExtResource("1_hebk6")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 visibility_layer = 64
-position = Vector2(191, 0)
-scale = Vector2(4.82, 1)
+position = Vector2(594, 0)
+scale = Vector2(12.88, 1)
+texture = ExtResource("1_s875d")
+
+[node name="Sprite2D" type="Sprite2D" parent="Sprite2D"]
+visibility_layer = 64
+position = Vector2(86.0248, -444)
+rotation = 1.5708
+scale = Vector2(16.5291, 1)
+texture = ExtResource("1_s875d")
+
+[node name="Sprite2D" type="Sprite2D" parent="Sprite2D/Sprite2D"]
+visibility_layer = 64
+position = Vector2(-40.7161, 174.457)
+rotation = 3.14159
+scale = Vector2(2.56521, 1)
 texture = ExtResource("1_s875d")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

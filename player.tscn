@@ -1,7 +1,8 @@
-[gd_scene load_steps=32 format=3 uid="uid://ybl0qgtjjtv7"]
+[gd_scene load_steps=34 format=3 uid="uid://ybl0qgtjjtv7"]
 
 [ext_resource type="Script" uid="uid://dsq18iuv8k63a" path="res://player.gd" id="1_u1c27"]
 [ext_resource type="Texture2D" uid="uid://ca1c3j07jybu4" path="res://art/player/Adventurer/Idle/AdventurerIdle.png" id="2_2hs0m"]
+[ext_resource type="PackedScene" uid="uid://8b34jv417s4n" path="res://hp_bar.tscn" id="2_iruf7"]
 [ext_resource type="PackedScene" uid="uid://b66i38p381f5" path="res://player_hitbox.tscn" id="2_q13i1"]
 [ext_resource type="Texture2D" uid="uid://dvhhja3j80nt3" path="res://art/player/Adventurer/Jab/AdventurerJab2.png" id="3_2hs0m"]
 [ext_resource type="Texture2D" uid="uid://cgmtv0sp8rayn" path="res://art/player/Adventurer/Jab/AdventurerJab3.png" id="4_1jxqw"]
@@ -21,6 +22,7 @@
 [ext_resource type="Texture2D" uid="uid://cuwwrvb1icyvy" path="res://art/player/Adventurer/Walk/AdventurerWalk3.png" id="10_q13i1"]
 [ext_resource type="Texture2D" uid="uid://cbwmssqfu7jlk" path="res://art/player/Adventurer/Nair/AdventurerNair3.png" id="10_qtqh7"]
 [ext_resource type="Script" uid="uid://c8xojrdxgkup5" path="res://PlayerWallCling.gd" id="16_u1c27"]
+[ext_resource type="Script" uid="uid://bueo1g8xjipps" path="res://State.gd" id="17_j5n4i"]
 [ext_resource type="Script" uid="uid://bdy7yhdduaali" path="res://PlayerLaunched.gd" id="17_op7ga"]
 [ext_resource type="Script" uid="uid://dkp4g1amp07l3" path="res://PlayerJab.gd" id="18_pylmc"]
 [ext_resource type="Script" uid="uid://yswjb37v8jh0" path="res://PlayerNair.gd" id="20_pbfsw"]
@@ -97,11 +99,12 @@ animations = [{
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_op7ga"]
 height = 26.0
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("animations", "statemach", "wall_cling_timer", "i_frame_timer", "launch_state", "hurtbox")]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("healthbar", "animations", "statemach", "wall_cling_timer", "i_frame_timer", "launch_state", "hurtbox")]
 position = Vector2(11, 25)
 scale = Vector2(2, 2)
 floor_constant_speed = true
 script = ExtResource("1_u1c27")
+healthbar = NodePath("CanvasLayer/HPBar")
 animations = NodePath("animations")
 move_speed = 500.0
 statemach = NodePath("StateMachine")
@@ -109,6 +112,17 @@ wall_cling_timer = NodePath("CanWallClingTimer")
 i_frame_timer = NodePath("CollisionBox/invincibility")
 launch_state = NodePath("StateMachine/Launched")
 hurtbox = NodePath("CollisionBox")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+scale = Vector2(2, 2)
+transform = Transform2D(2, 0, 0, 2, 0, 0)
+
+[node name="HPBar" parent="CanvasLayer" instance=ExtResource("2_iruf7")]
+offset_left = 19.0
+offset_top = 16.0
+offset_right = 259.0
+offset_bottom = 24.0
+metadata/_edit_use_anchors_ = true
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_priority = 10.0
@@ -174,6 +188,10 @@ target_position = Vector2(0, -20)
 script = ExtResource("7_1jxqw")
 initState = NodePath("Idle")
 parent = NodePath("..")
+
+[node name="Freeze" type="Node" parent="StateMachine"]
+script = ExtResource("17_j5n4i")
+metadata/_custom_type_script = "uid://bueo1g8xjipps"
 
 [node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("parent", "canTransitionTo")]
 script = ExtResource("8_dw050")

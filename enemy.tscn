@@ -1,7 +1,8 @@
-[gd_scene load_steps=16 format=3 uid="uid://b4fg52gdj0sbu"]
+[gd_scene load_steps=18 format=3 uid="uid://b4fg52gdj0sbu"]
 
 [ext_resource type="Script" uid="uid://cwilynpmggvll" path="res://enemy.gd" id="1_4gyqm"]
 [ext_resource type="Texture2D" uid="uid://b1keijqqaxfhy" path="res://art/TempEnemy.png" id="1_7k104"]
+[ext_resource type="PackedScene" uid="uid://8b34jv417s4n" path="res://hp_bar.tscn" id="2_ar8e5"]
 [ext_resource type="Script" uid="uid://b1gasoylckoe5" path="res://EnemyStateMachine.gd" id="3_epg4t"]
 [ext_resource type="Script" uid="uid://bvdt7jsarh3kp" path="res://EnemyIdle.gd" id="4_3yqyl"]
 [ext_resource type="Script" uid="uid://d4jd2b4t3tclw" path="res://EnemyLaunched.gd" id="4_epg4t"]
@@ -12,6 +13,7 @@
 [ext_resource type="Script" uid="uid://cp2lea0vssb3p" path="res://EnemyNair.gd" id="10_dxifv"]
 [ext_resource type="Script" uid="uid://dxdc2nbqedadq" path="res://EnemyUltimate.gd" id="11_pwjut"]
 [ext_resource type="Script" uid="uid://x5xy2wg7bl24" path="res://EnemyUmash.gd" id="13_ar8e5"]
+[ext_resource type="Script" uid="uid://bueo1g8xjipps" path="res://State.gd" id="14_doop2"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_wujgv"]
 radius = 34.0
@@ -30,16 +32,28 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("TBATimer", "animations", "statemach", "i_frame_timer", "launch_state", "hurtbox")]
+[node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("TBATimer", "healthbar", "animations", "statemach", "i_frame_timer", "launch_state", "hurtbox")]
 collision_layer = 2
 collision_mask = 2
 script = ExtResource("1_4gyqm")
 TBATimer = NodePath("TBA Timer")
+healthbar = NodePath("CanvasLayer/HPBar")
 animations = NodePath("AnimatedSprite2D")
 statemach = NodePath("StateMachine")
 i_frame_timer = NodePath("CollisionBox/invincibility")
 launch_state = NodePath("StateMachine/launched")
 hurtbox = NodePath("CollisionBox")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+scale = Vector2(2, 2)
+transform = Transform2D(2, 0, 0, 2, 0, 0)
+
+[node name="HPBar" parent="CanvasLayer" instance=ExtResource("2_ar8e5")]
+offset_left = 324.5
+offset_top = 306.0
+offset_right = 564.5
+offset_bottom = 314.0
+metadata/_edit_use_anchors_ = true
 
 [node name="Area2D" type="Area2D" parent="." groups=["Enemy Hurtbox"]]
 collision_priority = 10.0
@@ -80,7 +94,7 @@ parent = NodePath("..")
 script = ExtResource("4_3yqyl")
 animation_name = "default"
 parent = NodePath("..")
-canTransitionTo = [NodePath("../launched"), NodePath("../Fall"), NodePath("../walk"), NodePath("../Jab"), NodePath("../Jab"), NodePath("../Nair"), NodePath("../Nair"), NodePath("../Jab")]
+canTransitionTo = [NodePath("../launched"), NodePath("../Fall"), NodePath("../walk"), NodePath("../Jab"), NodePath("../Umash"), NodePath("../Nair"), NodePath("../Nair"), NodePath("../Jab")]
 weight = 0.5
 metadata/_custom_type_script = "uid://57scinuvn886"
 
@@ -183,9 +197,35 @@ duration = 0.05
 [node name="AttackTimer" type="Timer" parent="StateMachine/Ultimate"]
 one_shot = true
 
-[node name="Umash" type="Node" parent="StateMachine"]
+[node name="Umash" type="Node" parent="StateMachine" node_paths=PackedStringArray("attacks", "timer", "parent", "canTransitionTo")]
 script = ExtResource("13_ar8e5")
+attacks = NodePath("Hitbox")
+timer = NodePath("AttackTimer")
+animation_name = "default"
+parent = NodePath("..")
+canTransitionTo = [NodePath("../Fall"), NodePath("../idle"), NodePath("../Nair")]
 metadata/_custom_type_script = "uid://bfkp52swsh868"
+
+[node name="Hitbox" parent="StateMachine/Umash" node_paths=PackedStringArray("ent", "data", "area") groups=["Enemy Hitbox"] instance=ExtResource("9_dxifv")]
+position = Vector2(3, 2)
+scale = Vector2(3.84487, 1.76049)
+ent = NodePath("../../..")
+data = NodePath(".")
+area = NodePath(".")
+knockback = Vector2(1000, -1300)
+damage = 10.0
+radius = 30.0
+height = 40.0
+forswing = 0.01
+duration = 0.19
+offset = Vector2(0, -35)
+
+[node name="AttackTimer" type="Timer" parent="StateMachine/Umash"]
+one_shot = true
+
+[node name="Freeze" type="Node" parent="StateMachine"]
+script = ExtResource("14_doop2")
+metadata/_custom_type_script = "uid://bueo1g8xjipps"
 
 [connection signal="area_entered" from="Area2D" to="." method="check_collisions"]
 [connection signal="timeout" from="CollisionBox/invincibility" to="." method="_end_invincibility"]
@@ -194,3 +234,4 @@ metadata/_custom_type_script = "uid://bfkp52swsh868"
 [connection signal="timeout" from="StateMachine/Jab/AttackTimer" to="StateMachine/Jab" method="_end_timer"]
 [connection signal="timeout" from="StateMachine/Nair/AttackTimer" to="StateMachine/Nair" method="_end_timer"]
 [connection signal="timeout" from="StateMachine/Ultimate/AttackTimer" to="StateMachine/Ultimate" method="_end_timer"]
+[connection signal="timeout" from="StateMachine/Umash/AttackTimer" to="StateMachine/Umash" method="_end_timer"]

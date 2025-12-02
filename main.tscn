@@ -10,17 +10,28 @@
 script = ExtResource("1_h2yge")
 player = NodePath("player")
 
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
+scale = Vector2(2.053, 1)
+offset = Vector2(576, 324)
+
 [node name="tempFloor" parent="." instance=ExtResource("2_h2yge")]
 position = Vector2(-3, 565)
 
+[node name="BG" type="Sprite2D" parent="."]
+
 [node name="player" parent="." instance=ExtResource("1_0xm2m")]
+position = Vector2(200, 25)
 
 [node name="Enemy" parent="." instance=ExtResource("5_lquwl")]
-position = Vector2(425, -68)
+position = Vector2(877, -11)
 
-[node name="Control" parent="." instance=ExtResource("5_7mycd")]
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-grow_horizontal = 1
-grow_vertical = 1
+[node name="Ground_Walls" type="Sprite2D" parent="."]
+
+[node name="UI" parent="." instance=ExtResource("5_7mycd")]
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="playerDeath" from="player" to="." method="_player_death"]
+[connection signal="enemyDeath" from="Enemy" to="." method="_enemy_death"]

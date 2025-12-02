@@ -2,9 +2,12 @@ class_name enemy extends Entity
 
 var canAttack: bool = true
 @export var TBATimer: Timer
+@export var healthbar: hpbar
+signal enemyDeath
 
-func _ready():
+func enter():
 	EnemyStuff.hp = 1000
+	healthbar.init_health(EnemyStuff.hp)
 	EnemyStuff.phase = 1
 	super()
 	
@@ -14,7 +17,6 @@ func _process(delta:float):
 	
 func check_collisions(body):
 	if body.is_in_group("Player Hitbox") && !EnemyStuff.ult:
-		print("ouchie")
 		if !invincible:
 			statemach.transition(launch_state)
 		invincible = true
@@ -29,6 +31,12 @@ func check_collisions(body):
 			EnemyStuff.LaunchedVector = PlayerGlobals.launchVector
 			EnemyStuff.hp -= PlayerGlobals.dmg
 			i_frame_timer.start ( sqrt(abs(PlayerGlobals.launchVector.x)+abs(PlayerGlobals.launchVector.y))/200 ) 
+		healthbar._set_hp(EnemyStuff.hp)
+		if EnemyStuff.hp <= 0:
+			emit_signal("enemyDeath")
+		if(statemach.state != $StateMachine/Ultimate) && EnemyStuff.ult == true:
+			EnemyStuff.ult == false
+
 		#ouchie wouchie
 
 func TBA():

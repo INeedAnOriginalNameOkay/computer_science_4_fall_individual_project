@@ -17,6 +17,6 @@ func process_physics(delta:float):
 	elif (parent.parent as enemy ).canAttack:
 		EnemyStuff.combo = randi_range(1,5)
 		(parent.parent as enemy ).canAttack = false
-		(parent.parent as enemy ).TBATimer.start(randf_range(0,1))
+		(parent.parent as enemy ).TBATimer.start(randf_range(0,0.6))
 		exit(canTransitionTo[EnemyStuff.combo + 2])
 		

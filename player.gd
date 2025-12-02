@@ -1,7 +1,11 @@
 extends Entity
 
-func _ready():
+@export var healthbar: hpbar
+signal playerDeath
+
+func enter():
 	PlayerGlobals.hp = 200
+	healthbar.init_health(PlayerGlobals.hp)
 	super()
 	
 func _process(delta:float):
@@ -16,5 +20,9 @@ func check_collisions(body):
 		statemach.transition(launch_state)
 		invincible = true
 		PlayerGlobals.hp -= EnemyStuff.dmg
+		healthbar._set_hp(PlayerGlobals.hp)
+		emit_signal("plyaerHit")
 		i_frame_timer.start ( sqrt(abs(EnemyStuff.EnemyLaunchVector.x+EnemyStuff.EnemyLaunchVector.y))/400 ) 
+		if PlayerGlobals.hp <= 0:
+			emit_signal("playerDeath")
 		#ouchie wouchie

@@ -1,18 +1,80 @@
-[gd_scene load_steps=2 format=3 uid="uid://dxhyidhciqeib"]
+[gd_scene load_steps=7 format=3 uid="uid://dxhyidhciqeib"]
 
-[ext_resource type="Script" uid="uid://cyi88mgk5cyj8" path="res://PlayerHP.gd" id="1_fyqef"]
+[ext_resource type="Texture2D" uid="uid://dllgwp8f7bmj2" path="res://art/Untitled121_20250507211757.png" id="1_27fn8"]
+[ext_resource type="Texture2D" uid="uid://cie0jveasciyo" path="res://art/Untitled121_20250507211808.png" id="2_nltto"]
+[ext_resource type="Texture2D" uid="uid://crmjtchybcx0b" path="res://art/Untitled121_20250507211824.png" id="3_ibotj"]
+[ext_resource type="Script" uid="uid://gw5i5460wxor" path="res://text.gd" id="4_nltto"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_n5ude"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_27fn8")
+}],
+"loop": true,
+"name": &"angy",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_nltto")
+}],
+"loop": true,
+"name": &"annoyed",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_ibotj")
+}],
+"loop": true,
+"name": &"neutral",
+"speed": 5.0
+}]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_27fn8"]
+bg_color = Color(0, 0, 0, 0.411765)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+expand_margin_left = 10.0
+expand_margin_top = 10.0
+expand_margin_right = 10.0
+expand_margin_bottom = 10.0
 
 [node name="UI" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = -1.0
+offset_bottom = -1.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(1076, 142)
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_n5ude")
+animation = &"neutral"
+
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
-layout_mode = 0
-offset_right = 188.0
-offset_bottom = 50.0
-justification_flags = 161
-script = ExtResource("1_fyqef")
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -11.3439
+anchor_top = -0.0462963
+anchor_right = -10.703
+anchor_bottom = 0.246296
+offset_left = 13445.2
+offset_top = 121.0
+offset_right = 13293.8
+offset_bottom = 41.4
+grow_horizontal = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_27fn8")
+text = "Testing testing-"
+scroll_active = false
+visible_characters = 0
+visible_ratio = 0.0
+script = ExtResource("4_nltto")
+metadata/_edit_use_anchors_ = true
