@@ -60,6 +60,7 @@ sprite_frames = SubResource("SpriteFrames_n5ude")
 animation = &"neutral"
 
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
+z_index = 5
 layout_mode = 1
 anchors_preset = -1
 anchor_left = -11.3439
@@ -77,4 +78,3 @@ scroll_active = false
 visible_characters = 0
 visible_ratio = 0.0
 script = ExtResource("4_nltto")
-metadata/_edit_use_anchors_ = true

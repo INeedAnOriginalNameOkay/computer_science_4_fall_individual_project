@@ -1,12 +1,18 @@
-[gd_scene load_steps=18 format=3 uid="uid://b4fg52gdj0sbu"]
+[gd_scene load_steps=24 format=3 uid="uid://b4fg52gdj0sbu"]
 
 [ext_resource type="Script" uid="uid://cwilynpmggvll" path="res://enemy.gd" id="1_4gyqm"]
-[ext_resource type="Texture2D" uid="uid://b1keijqqaxfhy" path="res://art/TempEnemy.png" id="1_7k104"]
 [ext_resource type="PackedScene" uid="uid://8b34jv417s4n" path="res://hp_bar.tscn" id="2_ar8e5"]
+[ext_resource type="Texture2D" uid="uid://c8ajhfalqlugn" path="res://art/enemy/Luggard.png" id="3_5hcft"]
+[ext_resource type="Texture2D" uid="uid://c2qen7yup2jam" path="res://art/enemy/LuggardFall.png" id="3_8q82m"]
 [ext_resource type="Script" uid="uid://b1gasoylckoe5" path="res://EnemyStateMachine.gd" id="3_epg4t"]
 [ext_resource type="Script" uid="uid://bvdt7jsarh3kp" path="res://EnemyIdle.gd" id="4_3yqyl"]
+[ext_resource type="Texture2D" uid="uid://cgsqrxpdqhmlv" path="res://art/enemy/New Piskel (2).png" id="4_5hcft"]
 [ext_resource type="Script" uid="uid://d4jd2b4t3tclw" path="res://EnemyLaunched.gd" id="4_epg4t"]
+[ext_resource type="Texture2D" uid="uid://cmqw3wnfs3cto" path="res://art/enemy/LuggardWalk0.png" id="4_otto8"]
 [ext_resource type="Script" uid="uid://devyoglsbkyjd" path="res://EnemyFall.gd" id="5_3yqyl"]
+[ext_resource type="Texture2D" uid="uid://blciiv0b7ccrf" path="res://art/enemy/LuggardWalk1.png" id="5_8q82m"]
+[ext_resource type="Texture2D" uid="uid://c6uqgtsfutx1d" path="res://art/enemy/LuggardWalk2.png" id="6_epc7x"]
+[ext_resource type="Texture2D" uid="uid://bhxj7cbhoaeky" path="res://art/enemy/LuggardWalk3.png" id="7_o7rgc"]
 [ext_resource type="Script" uid="uid://bd7s4hsv2a75h" path="res://EnemyWalk.gd" id="7_wujgv"]
 [ext_resource type="Script" uid="uid://dhbui770ouaas" path="res://EnemyJab.gd" id="8_dxifv"]
 [ext_resource type="PackedScene" uid="uid://b66i38p381f5" path="res://player_hitbox.tscn" id="9_dxifv"]
@@ -25,7 +31,40 @@ radius = 29.0172
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("1_7k104")
+"texture": ExtResource("3_8q82m")
+}],
+"loop": true,
+"name": &"Fall",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_5hcft")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_otto8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_8q82m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_epc7x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_o7rgc")
+}],
+"loop": true,
+"name": &"Walk",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_5hcft")
 }],
 "loop": true,
 "name": &"default",
@@ -74,9 +113,10 @@ one_shot = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 visibility_layer = 32
-position = Vector2(0, 8)
-scale = Vector2(0.137963, 0.137963)
+position = Vector2(3.8147e-06, 3.8147e-06)
+scale = Vector2(1.88443, 1.88443)
 sprite_frames = SubResource("SpriteFrames_4gyqm")
+animation = &"Fall"
 
 [node name="SuperTimer" type="Timer" parent="."]
 
@@ -92,7 +132,7 @@ parent = NodePath("..")
 
 [node name="idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("parent", "canTransitionTo")]
 script = ExtResource("4_3yqyl")
-animation_name = "default"
+animation_name = "Idle"
 parent = NodePath("..")
 canTransitionTo = [NodePath("../launched"), NodePath("../Fall"), NodePath("../walk"), NodePath("../Jab"), NodePath("../Umash"), NodePath("../Nair"), NodePath("../Nair"), NodePath("../Jab")]
 weight = 0.5
@@ -100,7 +140,7 @@ metadata/_custom_type_script = "uid://57scinuvn886"
 
 [node name="Fall" type="Node" parent="StateMachine" node_paths=PackedStringArray("parent", "canTransitionTo")]
 script = ExtResource("5_3yqyl")
-animation_name = "default"
+animation_name = "Fall"
 parent = NodePath("..")
 canTransitionTo = [NodePath("../idle"), NodePath("../launched")]
 weight = 0.5
@@ -117,7 +157,7 @@ metadata/_custom_type_script = "uid://c6js8l6db5t4c"
 
 [node name="walk" type="Node" parent="StateMachine" node_paths=PackedStringArray("parent", "canTransitionTo")]
 script = ExtResource("7_wujgv")
-animation_name = "default"
+animation_name = "Walk"
 parent = NodePath("..")
 canTransitionTo = [NodePath("../idle"), NodePath("../Fall"), NodePath("../launched")]
 metadata/_custom_type_script = "uid://dgohq63eyvtd0"

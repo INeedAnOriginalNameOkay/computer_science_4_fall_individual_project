@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 PlayerGlobals="*res://PlayerGlobals.gd"
 EnemyStuff="*res://EnemyStuff.gd"
+GlobalGlobal="*res://GlobalGlobal.gd"
 
 [global_group]
 

@@ -39,5 +39,13 @@ func check_collisions(body):
 
 		#ouchie wouchie
 
+func play_anim(str: String):
+	if !entered:
+		return
+	if !GlobalGlobal.enemyGraphics:
+		animations.play("default")
+		return
+	animations.play(str)
+	
 func TBA():
 	canAttack = true

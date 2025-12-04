@@ -2,8 +2,8 @@ extends Node2D
 @export var player = CharacterBody2D
 func _ready():
 	$Camera2D.enabled = false
-
-	#dialog stuff
+	$UI/RichTextLabel.start()
+	await $UI/RichTextLabel.finishDialog
 	_reset()
 
 func _reset():

@@ -1,10 +1,41 @@
-[gd_scene load_steps=6 format=3 uid="uid://w30s6s2m628i"]
+[gd_scene load_steps=11 format=3 uid="uid://w30s6s2m628i"]
 
 [ext_resource type="PackedScene" uid="uid://ybl0qgtjjtv7" path="res://player.tscn" id="1_0xm2m"]
 [ext_resource type="Script" uid="uid://dasa8p0fplepg" path="res://main.gd" id="1_h2yge"]
 [ext_resource type="PackedScene" uid="uid://urmmnabgixtj" path="res://temp_floor.tscn" id="2_h2yge"]
-[ext_resource type="PackedScene" uid="uid://dxhyidhciqeib" path="res://ui.tscn" id="5_7mycd"]
+[ext_resource type="Texture2D" uid="uid://dllgwp8f7bmj2" path="res://art/Untitled121_20250507211757.png" id="5_5vw27"]
 [ext_resource type="PackedScene" uid="uid://b4fg52gdj0sbu" path="res://enemy.tscn" id="5_lquwl"]
+[ext_resource type="Texture2D" uid="uid://cie0jveasciyo" path="res://art/Untitled121_20250507211808.png" id="6_kek77"]
+[ext_resource type="Texture2D" uid="uid://crmjtchybcx0b" path="res://art/Untitled121_20250507211824.png" id="7_4c57u"]
+[ext_resource type="Script" uid="uid://gw5i5460wxor" path="res://text.gd" id="8_efxa6"]
+[ext_resource type="Script" uid="uid://cbtp25nyl7sda" path="res://otherpart.gd" id="8_kek77"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_dg77c"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_5vw27")
+}],
+"loop": true,
+"name": &"angy",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_kek77")
+}],
+"loop": true,
+"name": &"annoyed",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_4c57u")
+}],
+"loop": true,
+"name": &"neutral",
+"speed": 5.0
+}]
 
 [node name="Main" type="Node2D" node_paths=PackedStringArray("player")]
 script = ExtResource("1_h2yge")
@@ -30,8 +61,47 @@ position = Vector2(877, -11)
 
 [node name="Ground_Walls" type="Sprite2D" parent="."]
 
-[node name="UI" parent="." instance=ExtResource("5_7mycd")]
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+tooltip_text = "j"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="UI"]
+position = Vector2(993, 110)
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_dg77c")
+animation = &"neutral"
+script = ExtResource("8_kek77")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="UI"]
+z_index = 5
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 353.0
+offset_top = 81.0
+offset_right = 913.0
+offset_bottom = 153.0
+grow_horizontal = 2
+text = "Testing testing-"
+scroll_active = false
+visible_characters = 0
+visible_ratio = 0.0
+script = ExtResource("8_efxa6")
+
+[node name="ColorRect" type="ColorRect" parent="UI/RichTextLabel"]
+layout_mode = 0
+offset_left = -6.0
+offset_top = -10.0
+offset_right = 569.0
+offset_bottom = 82.0
+color = Color(0, 0, 0, 0.12549)
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="playerDeath" from="player" to="." method="_player_death"]
 [connection signal="enemyDeath" from="Enemy" to="." method="_enemy_death"]
+[connection signal="finishDialog" from="UI/RichTextLabel" to="UI/AnimatedSprite2D" method="_on_rich_text_label_finish_dialog"]
+[connection signal="startDialog" from="UI/RichTextLabel" to="UI/AnimatedSprite2D" method="_on_rich_text_label_start_dialog"]
